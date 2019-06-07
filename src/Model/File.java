@@ -3,22 +3,20 @@ package Model;
 public class File {
 
 	/**
-	 * 
-	 * @param fileName
-	 * @param data
+	 * Write a serialization of the object 
+	 * @param fileName the fileName of the file
+	 * @param object the object to serialize
 	 */
-	public void writeObject(String fileName, String data) {
-		// TODO - implement File.writeObject
-		throw new UnsupportedOperationException();
+	public void writeObject(String fileName, Object object) {
+
 	}
 
 	/**
-	 * 
-	 * @param fileName
+	 * Read the serialized object in the file
+	 * @param fileName the fileName of the file
 	 */
 	public Object readObject(String fileName) {
-		// TODO - implement File.readObject
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 }
