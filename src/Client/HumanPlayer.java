@@ -19,7 +19,7 @@ public class HumanPlayer {
 	/**
 	 * The name of the player
 	 */
-	private String nom;
+	private String name;
 
 	/**
 	 * Constructor of HumanPlayer
@@ -27,7 +27,7 @@ public class HumanPlayer {
 	 * @param nom the name of the player 
 	 * @param client the client which uses the HumanPlayer
 	 */
-	public HumanPlayer(Color color, String nom, Client client) {
+	public HumanPlayer(Color color, String name, Client client) {
 	}
 
 	/**
