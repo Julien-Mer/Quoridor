@@ -1,17 +1,18 @@
 package Server;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.net.Socket;
 
 import Client.*;
 import Game.Square;
 
-public class AutoPlayer extends Player {
+public class AutoPlayer extends Player implements Serializable  {
 	
 	/**
 	 * The board used by the game
 	 */
-	Board board;
+	transient Board board;
 
 	/**
 	 * Constructor of AutoPlayer
@@ -22,8 +23,8 @@ public class AutoPlayer extends Player {
 	 * @param barriers the number of barriers of the player
 	 * @param board the board used by the game
 	 */
-	public AutoPlayer(String name, Color color, Square position, int barriers, Board board) {
-		super(name, color, null, position, barriers);
+	public AutoPlayer(String name, Color color, Socket socket, Square position, Board board) {
+		super(name, color, null, position);
 		this.board = board;
 	}
 
@@ -49,6 +50,27 @@ public class AutoPlayer extends Player {
 	 */
 	public void movePlayer(Square square) {
 
+	}
+	
+	/**
+	 * Get the name of the bot
+	 * @param the id of the bot
+	 * @return the name of the bot
+	 */
+	public static String getName(int i) {
+		String res = "";
+		switch(i) {
+			case 0:
+				res = "Pierre";
+				break;
+			case 1:
+				res = "Baptiste";
+				break;
+			case 2:
+				res = "Julien";
+				break;
+		}
+		return res;
 	}
 
 }
