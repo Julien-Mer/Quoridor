@@ -23,5 +23,13 @@ public class NewGameController {
 		this.client = client;
 		this.view = new NewGame();
 	}
+	
+	/**
+	 *  Method which return the current view
+	 * @return the current view
+	 */
+	public NewGame getView() {
+		return this.view;
+	}
 
 }
