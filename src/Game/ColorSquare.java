@@ -33,5 +33,4 @@ public class ColorSquare {
 	 * Color of the fourth player
 	 */
 	public static final Color YELLOW = null;
-
 }

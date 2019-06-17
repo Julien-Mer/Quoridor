@@ -50,5 +50,17 @@ public class Square implements Serializable {
 	public int getY() {
 		return this.y;
 	}
+	
+	public boolean isFree() {
+		boolean res=false;
+		if(this.color==ColorSquare.FREE) res=true;
+		return res;
+	}
+	
+	public boolean isBarrier() {
+		boolean res=false;
+		if(this.color==ColorSquare.BARRIER) res=true;
+		return res;
+	}
 
 }

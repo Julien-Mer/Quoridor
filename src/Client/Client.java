@@ -74,9 +74,9 @@ public class Client {
 	 */
 	public Client() {
 		try {
-			this.socket = ClientCommunication.initialize("127.0.0.1", 1111);
+			this.socket = ClientCommunication.initialize("projet-milleetunsourires.com", 1111);
 			this.client = client;
-			newGame(4, 2, "Test");
+			newGame(4, 2, "OUIPIERRE");
 		} catch(Exception ex) {
 			System.out.println("Impossible de se connecter au serveur");
 		}

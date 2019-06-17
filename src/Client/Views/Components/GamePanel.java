@@ -2,6 +2,8 @@ package Client.Views.Components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -19,6 +21,7 @@ public class GamePanel extends JPanel {
     private JTextField[][] fieldGrid = new JTextField[MAX_ROWS][MAX_ROWS];
     JPanel[][] panels;
     public GamePanel() {
+    	int a=0;
         JPanel mainPanel = new JPanel(new GridLayout(CLUSTER, CLUSTER));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
         mainPanel.setBackground(BG);
@@ -26,22 +29,19 @@ public class GamePanel extends JPanel {
         this.panels = new JPanel[CLUSTER][CLUSTER];
         for (int i = 0; i < panels.length; i++) {
             for (j = 0; j < panels[i].length; j++) {
-                panels[i][j] = new JPanel(new GridLayout(CLUSTER, CLUSTER, 1, 1));
-                panels[i][j].setBackground(BG);
-                panels[i][j].setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
+            	panels[i][j] = new JPanel(new GridLayout(CLUSTER, CLUSTER, 1, 1));
                 mainPanel.add(panels[i][j]);
             }
-            if(j<panels[i].length) {
-                panels[i][j].setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
-            }
         }
-
+        
+        int m=0;
         for (int row = 0; row < fieldGrid.length; row++) {
             for (int col = 0; col < fieldGrid[row].length; col++) {
-                fieldGrid[row][col] = createField(row, col);
-                int i = row / 3;
+            	int i = row / 3;
                 int k = col / 3;
+                fieldGrid[row][col] = createField(row, col);
                 panels[i][k].add(fieldGrid[row][col]);
+                fieldGrid[row][col].setBorder(BorderFactory.createBevelBorder(0,Color.WHITE,Color.WHITE));
             }
         }
 
@@ -54,8 +54,7 @@ public class GamePanel extends JPanel {
         field.setHorizontalAlignment(JTextField.CENTER);
         field.setFont(field.getFont().deriveFont(Font.BOLD, FIELD_PTS));
         field.setEnabled(false);
-
-
+        field.setBackground(new Color(139,69,19));
         return field;
     }
 }

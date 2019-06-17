@@ -21,7 +21,7 @@ public class GameController {
 	 */
 	public GameController(Client client) {
 		this.client = client;
-		this.view = new Game();
+		//this.view = new Game();
 	}
 	
 	/**

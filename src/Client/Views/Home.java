@@ -10,8 +10,6 @@ public class Home extends JFrame{
 	private RoundedButton newGameBtn;
 	private RoundedButton resumeGameBtn;
 	private RoundedButton learningModeBtn;
-	private JLabel labelNul;
-	private JLabel labelNul1;
 	private boolean activeResumeGame;
 
 
@@ -30,7 +28,7 @@ public class Home extends JFrame{
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 		setTitle("Quoridor");
-		
+		this.setResizable(false);
 
 		this.newGameBtn = new RoundedButton(50,Color.WHITE);
 		this.newGameBtn.setText("Nouvelle partie");
