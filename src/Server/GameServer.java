@@ -46,6 +46,7 @@ public class GameServer implements Serializable {
 	 * @param nbPlayers the number of players
 	 */
 	public GameServer(int nbPlayers, int nbAutoPlayers) {
+		System.out.println("Création d'un serveur (" + nbPlayers  + " joueurs, " + nbAutoPlayers + " ordinateurs)");
 		this.nbPlayers = nbPlayers;
 		this.nbAutoPlayers = nbAutoPlayers;
 		this.nbPlaces = this.nbPlayers - this.nbAutoPlayers - 1;
@@ -75,7 +76,7 @@ public class GameServer implements Serializable {
 	 * Starts the game
 	 */
 	public void start() {
-		System.out.println("STAAART");
+		System.out.println("Début d'une partie (" + this.nbPlayers  + " joueurs)");
 	}
 
 	/**
@@ -166,9 +167,9 @@ public class GameServer implements Serializable {
 			ServerCommunication.sendData(BasicCommunication.NEW_PLAYER_PREFIX, player, player.getListener()); // On lui envoie son objet
 			timeLine.add(player);
 			refreshInfos();
+			System.out.println(player.getName() + " a rejoint un serveur (" + this.nbPlayers  + " joueurs)");
 			if(timeLine.size() == this.nbPlayers) 
 				this.start();
-			
 		} catch (IOException e) {
 			System.out.println("Impossible d'ajouter le joueur à la partie");
 		}

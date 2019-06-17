@@ -51,8 +51,8 @@ public class Client extends Listener {
 	 * @throws Exception if the server is unavailable
 	 */
 	public Client() throws Exception {
-		//super(ClientCommunication.initialize("projet-milleetunsourires.com", 1111));
-		super(ClientCommunication.initialize("127.0.0.1", 1111));
+		super(ClientCommunication.initialize("projet-milleetunsourires.com", 1111));
+		//super(ClientCommunication.initialize("127.0.0.1", 1111));
 		this.client = this;
 		Listener listener = this;
 		new Thread( new Runnable() {
@@ -67,7 +67,7 @@ public class Client extends Listener {
 	        }
 	    } ).start();
 		
-		newGame(4, 3, "Test");
+		newGame(4, 2, "Test");
 	}
 	
 	/**
