@@ -30,7 +30,7 @@ public class ClientCommunication extends BasicCommunication {
 	 * @param orientation the orientation of the barrier
 	 */
 	public static String getPlaceBarrierPacket(int x, int y, int orientation) {
-		return MOVE_PREFIX + ";" + x + ":" + y + ":" + orientation;
+		return x + ";" + y + ";" + orientation;
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class ClientCommunication extends BasicCommunication {
 	 * @param y the y position to move
 	 */
 	public static String getMovePacket(int x, int y) {
-		return MOVE_PREFIX + ";" + x + ":" + y;
+		return x + ";" + y;
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class ClientCommunication extends BasicCommunication {
 	 * @param name The name of the player
 	 */
 	public static String getNewGamePacket(int bots, int players, String name) {
-		return NEW_GAME_PREFIX + ";" + bots + ";" + players + ";" + name;
+		return bots + ";" + players + ";" + name;
 	}
 
 }

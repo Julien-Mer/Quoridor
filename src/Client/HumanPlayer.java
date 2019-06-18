@@ -2,9 +2,8 @@ package Client;
 
 import java.awt.Color;
 import java.io.*;
-import Client.Controllers.*;
 import Game.*;
-import Model.ServerListener;
+import Model.*;
 import Server.Player;
 
 public class HumanPlayer extends Player implements Serializable {
@@ -22,7 +21,7 @@ public class HumanPlayer extends Player implements Serializable {
 	 * @param position the position of the player
 	 * @param barriers the maximum of barriers for the player
 	 */
-	public HumanPlayer(String name, Color color, ServerListener listener, Square position) {
+	public HumanPlayer(String name, Color color, DataListener listener, Square position) {
 		super(name, color, listener, position);
 	}
 
@@ -43,12 +42,13 @@ public class HumanPlayer extends Player implements Serializable {
 	}
 
 	/**
-	 * Try to set the position of the player
+	 * Try to move the player
 	 * @param x : the horizontal position
 	 * @param y : the vertical position 
+	 * @throws IOException Exception if the socket is unavailable
 	 */
-	public void setPosition(int x, int y) {
-
+	public void movePlayer(int x, int y) throws IOException {
+		BasicCommunication.sendData(BasicCommunication.MOVE_PREFIX, ClientCommunication.getMovePacket(x, y), this.getListener());
 	}
 	
 	/**
