@@ -33,7 +33,6 @@ public class Home extends JFrame{
 
 		this.newGameBtn = new RoundedButton(50,Color.WHITE);
 		this.newGameBtn.setText("Nouvelle partie");
-		//this.newGameBtn.addActionListener(new HomeController(this));
 
 		this.resumeGameBtn = new RoundedButton(50,Color.WHITE);
 		this.resumeGameBtn.setText("Reprendre la partie");

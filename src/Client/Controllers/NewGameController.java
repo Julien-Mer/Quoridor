@@ -4,12 +4,7 @@ import Client.*;
 import Client.Views.NewGame;
 
 public class NewGameController {
-	
-	/**
-	 * The client used by the Game
-	 */
-	private Client client;
-	
+	private String name;
 	/**
 	 * The NewGame view
 	 */
@@ -19,9 +14,15 @@ public class NewGameController {
 	 * Constructor of NewGameController
 	 * @param client the client used by the game
 	 */
-	public NewGameController(Client client) {
-		this.client = client;
+	public NewGameController() {
 		this.view = new NewGame();
+		this.view.setVisible(true);
+		this.view.getAddButtonPlayer().addActionListener(new Listener(this));
+		this.view.getAddButtonRobot().addActionListener(new Listener(this));
+		this.view.getRemoveButtonPlayer().addActionListener(new Listener(this));
+		this.view.getRemoveButtonRobot().addActionListener(new Listener(this));
+		this.view.getConfirmBtn().addActionListener(new Listener(this));
+		this.view.getChoiceLvl().addActionListener(new Listener(this));
 	}
 	
 	/**

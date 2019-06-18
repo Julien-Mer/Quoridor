@@ -41,7 +41,7 @@ public class NewGame extends JFrame {
 		panel.setLayout(new GridLayout(5, 1));
 		panel.setPreferredSize(new Dimension(500,500));
 		
-		ImagePanel namePanel = new ImagePanel("src/resources/background.jpg");
+		ImagePanel namePanel = new ImagePanel("src/resources/background_first_panel.jpg");
 		namePanel.setBackground(Color.WHITE);
 		this.nameLbl = new JLabel("Votre nom: ");
 		this.nameTextField = new JTextField();
@@ -67,29 +67,31 @@ public class NewGame extends JFrame {
 		
 		this.addButtonPlayer = new ImageButton("bouton_plus.png");
 		this.removeButtonPlayer = new ImageButton("bouton_moins.png");
+		this.removeButtonPlayer.setVisible(false);
 		
 		this.addButtonRobot = new ImageButton("bouton_plus.png");
 		this.removeButtonRobot = new ImageButton("bouton_moins.png");
+		this.removeButtonRobot.setVisible(false);
 		
-		ImagePanel buttonPanelPlayer = new ImagePanel("src/resources/background.jpg");
+		ImagePanel buttonPanelPlayer = new ImagePanel("src/resources/background_second_panel.jpg");
 		buttonPanelPlayer.setBackground(Color.WHITE);
 		buttonPanelPlayer.add(this.playerLbl);
 		buttonPanelPlayer.add(this.removeButtonPlayer);
 		buttonPanelPlayer.add(countLblPlayer);
 		buttonPanelPlayer.add(this.addButtonPlayer);
 		
-		ImagePanel buttonPanelRobot = new ImagePanel("src/resources/background.jpg");
+		ImagePanel buttonPanelRobot = new ImagePanel("src/resources/background_third_panel.jpg");
 		buttonPanelRobot.setBackground(Color.WHITE);
 		buttonPanelRobot.add(this.robotLbl);
 		buttonPanelRobot.add(this.removeButtonRobot);
 		buttonPanelRobot.add(countLblRobot);
 		buttonPanelRobot.add(this.addButtonRobot);
 		
-		ImagePanel choiceLvl = new ImagePanel("src/resources/background.jpg");
+		ImagePanel choiceLvl = new ImagePanel("src/resources/background_fourth_panel.jpg");
 		choiceLvl.add(this.choix);
 		choiceLvl.add(this.choiceLvlIA);
 		
-		ImagePanel panelConfirm = new ImagePanel("src/resources/background.jpg");
+		ImagePanel panelConfirm = new ImagePanel("src/resources/background_fifth_panel.jpg");
 		buttonPanelRobot.setBackground(Color.WHITE);
 		panelConfirm.add(this.confirmBtn);
 		
@@ -102,18 +104,57 @@ public class NewGame extends JFrame {
 		pack();
 	}
 	
+	/**
+	 * Method which return the name of the player
+	 * @return the name of the player
+	 */
+	public JTextField getNameTextField() {
+		return this.nameTextField;
+	}
+	/**
+	 * Method which return the JComboBox
+	 * @return the JComboBox
+	 */
+	@SuppressWarnings("rawtypes")
+	public JComboBox getChoiceLvl() {
+		return this.choiceLvlIA;
+	}
 	
 	/**
-	 * Add the value to number
-	 * @param number the value to add
+	 * Method which return the confirmation button
+	 * @return the confirmation button
 	 */
-	public void addNumber(int number) {
-		this.number += number;
+	public RoundedButton getConfirmBtn() {
+		return this.confirmBtn;
+	}
+	
+	/**
+	 * Method which enable or disable the confirm button
+	 * @param b true or false depending the case
+	 */
+	public void setConfirmBtn(boolean b) {
+		this.confirmBtn.setEnabled(b);
+	}
+	
+	/**
+	 * Change the value of the label player
+	 * @param number the value to change
+	 */
+	public void changeLabelPlayer(int number) {
+		this.countLblPlayer.setText(String.valueOf(number));
+	}
+	
+	/**
+	 * Change the value of the label robot
+	 * @param number the value to change
+	 */
+	public void changeLabelRobot(int number) {
+		this.countLblRobot.setText(String.valueOf(number));
 	}
 	
 	
 	/**
-	 * Get the add button
+	 * Get the add button of the number of player
 	 * @return the add button
 	 */
 	public ImageButton getAddButtonPlayer() {
@@ -121,7 +162,7 @@ public class NewGame extends JFrame {
 	}
 	
 	/**
-	 * Get the remove button
+	 * Get the remove button of the number of player
 	 * @return the remove button
 	 */
 	public ImageButton getRemoveButtonPlayer() {
@@ -134,5 +175,61 @@ public class NewGame extends JFrame {
 	 */
 	public JLabel getCountLblPlayer() {
 		return this.countLblPlayer;
+	}
+	
+	/**
+	 * Get the count JLabel
+	 * @return the count JLabel
+	 */
+	public JLabel getCountLblRobot() {
+		return this.countLblRobot;
+	}
+	
+	/**
+	 * Get the remove button of the number of robot
+	 * @return the remove button
+	 */
+	public ImageButton getRemoveButtonRobot() {
+		return this.removeButtonRobot;
+	}
+	
+	/**
+	 * Get the add button of the number of robot
+	 * @return the add button
+	 */
+	public ImageButton getAddButtonRobot() {
+		return this.addButtonRobot;
+	}
+	
+	/**
+	 * Method which enable or disable the add button player
+	 * @param b true or false depending the case
+	 */
+	public void setAddButtonPlayer(boolean b) {
+		this.addButtonPlayer.setVisible(b);
+	}
+	
+	/**
+	 * Method which enable or disable the remove button player
+	 * @param b true or false depending the case
+	 */
+	public void setRemoveButtonPlayer(boolean b) {
+		this.removeButtonPlayer.setVisible(b);
+	}
+	
+	/**
+	 * Method which enable or disable the remove button robot
+	 * @param b true or false depending the case
+	 */
+	public void setRemoveButtonRobot(boolean b) {
+		this.removeButtonRobot.setVisible(b);
+	}
+	
+	/**
+	 * Method which enable or disable the add button robot
+	 * @param b true or false depending the case
+	 */
+	public void setAddButtonRobot(boolean b) {
+		this.addButtonRobot.setVisible(b);
 	}
 } 

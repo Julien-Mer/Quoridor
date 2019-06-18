@@ -1,15 +1,8 @@
 package Client.Controllers;
-
-import Client.*;
 import Client.Views.Home;
 
 public class HomeController {
 
-	/**
-	 * The client of game
-	 */
-	private Client client;
-	
 	/**
 	 * The Home view
 	 */
@@ -19,9 +12,12 @@ public class HomeController {
 	 * Constructor of HomeController
 	 * @param client The client used by the game 
 	 */
-	public HomeController(Client client,Home h) {
-		this.client = client;
-		this.view = h;
+	public HomeController() {
+		this.view = new Home(true);
+		this.view.setVisible(true);
+		this.view.getNewGameBtn().addActionListener(new Listener(this));
+		this.view.getResumeGameBtn().addActionListener(new Listener(this));
+		this.view.getLearningModeBtn().addActionListener(new Listener(this));
 	}
 	
 	/**
@@ -31,15 +27,6 @@ public class HomeController {
 	public Home getView() {
 		return this.view;
 	}
-	
-	/**
-	 * Method which return the current Client
-	 * @return the current client
-	 */
-	public Client getClient() {
-		return this.client;
-	}
-	
 	
 
 }

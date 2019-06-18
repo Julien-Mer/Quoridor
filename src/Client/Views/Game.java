@@ -24,7 +24,7 @@ public class Game extends JFrame{
 		this.setResizable(false);
 		setTitle("Quoridor");
 
-		PanelInfoPlayer panLbl1 = new PanelInfoPlayer("Pierre","10","Julien","10","src/resources/background_Game.jpg");
+		PanelInfoPlayer panLbl1 = new PanelInfoPlayer("Pierre","10","Julien","10","src/resources/background_left_panel.jpg");
 		PanelInfoPlayer panLbl2 = new PanelInfoPlayer("Baptiste","10","Max","10","src/resources/background_Game.jpg");
 		
 		ImagePanel gridGame = new ImagePanel("src/resources/background_Game.jpg");
