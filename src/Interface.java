@@ -1,8 +1,8 @@
 import Client.Views.*;
-import Game.*;
+import Client.Views.Message;
 public class Interface{
   public static void main(String[] args){
-	Game g = new Game();
+	NewGame g = new NewGame();
 	g.setVisible(true);
   }
 }

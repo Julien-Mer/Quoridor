@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class Home extends JFrame{
 
+	private static final long serialVersionUID = 1L;
 	private ImagePanel backgroundPanel;
 	private JLabel titreLabel;
 	private RoundedButton newGameBtn;
@@ -47,7 +48,7 @@ public class Home extends JFrame{
 		this.learningModeBtn.setText("Mode pédagogique");
 		//this.learningModeBtn.addActionListener(new HomeController(this));
 
-		this.titreLabel = new JLabel(new ImageIcon("src/resources/titre.jpg"));
+		this.titreLabel = new JLabel(new ImageIcon("src/resources/titre.png"));
 		
 		this.backgroundPanel=new ImagePanel("src/resources/background.jpg");
 		this.backgroundPanel.setPreferredSize(new Dimension(500,400));

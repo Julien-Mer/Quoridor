@@ -2,19 +2,17 @@ package Client.Views;
 
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-
 import Client.Views.Components.ImageButton;
 import Client.Views.Components.RoundedButton;
 import Client.Views.Components.ImagePanel;
+import javax.swing.JComboBox;
 
 
 import java.awt.*;
 
 public class NewGame extends JFrame {
-
-	private int number = 0;
+	private int number=0;
+	private static final long serialVersionUID = -8380809043760417461L;
 	private ImageButton addButtonPlayer;
 	private ImageButton removeButtonPlayer;
 	private JLabel countLblPlayer;
@@ -26,16 +24,21 @@ public class NewGame extends JFrame {
 	private JLabel nameLbl;
 	private JTextField nameTextField;
 	private RoundedButton confirmBtn;
+	@SuppressWarnings("rawtypes")
+	private JComboBox choiceLvlIA;
+	private JLabel choix;
+	
 	
 	/**
 	* Create the GUI and show it. For thread safety,
 	* this method should be invoked from the
 	* event-dispatching thread.
 	*/
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public NewGame() {
 		ImagePanel panel = new ImagePanel("src/resources/background.jpg");
 		panel.setBackground(Color.white);
-		panel.setLayout(new GridLayout(4, 1));
+		panel.setLayout(new GridLayout(5, 1));
 		panel.setPreferredSize(new Dimension(500,500));
 		
 		ImagePanel namePanel = new ImagePanel("src/resources/background.jpg");
@@ -48,7 +51,10 @@ public class NewGame extends JFrame {
 		namePanel.add(this.nameLbl);
 		namePanel.add(this.nameTextField);
 		
-	
+		Object[] levels = new Object[] {"Facile","Moyen","Difficile"};
+		this.choiceLvlIA = new JComboBox(levels);
+		this.choix = new JLabel("Niveau de l'IA: ");
+		
 		this.playerLbl = new JLabel("Nombre de joueurs: ");
 		
 		this.countLblPlayer = new JLabel("2");
@@ -57,23 +63,10 @@ public class NewGame extends JFrame {
 		this.countLblRobot = new JLabel("0");
 		this.countLblRobot.setFont(new Font("Dialog", Font.PLAIN, 20));
 		
-		
-		
-
 		this.robotLbl = new JLabel("Nombre d'IA: ");
 		
 		this.addButtonPlayer = new ImageButton("bouton_plus.png");
 		this.removeButtonPlayer = new ImageButton("bouton_moins.png");
-		if(Integer.parseInt(this.countLblPlayer.getText())==4) {
-			this.addButtonPlayer.setVisible(false);
-		}else {
-			this.removeButtonPlayer.setVisible(true);
-		}
-		if(Integer.parseInt(this.countLblPlayer.getText())==2) {
-			this.removeButtonPlayer.setVisible(false);
-		}else {
-			this.removeButtonPlayer.setVisible(true);
-		}
 		
 		this.addButtonRobot = new ImageButton("bouton_plus.png");
 		this.removeButtonRobot = new ImageButton("bouton_moins.png");
@@ -92,6 +85,10 @@ public class NewGame extends JFrame {
 		buttonPanelRobot.add(countLblRobot);
 		buttonPanelRobot.add(this.addButtonRobot);
 		
+		ImagePanel choiceLvl = new ImagePanel("src/resources/background.jpg");
+		choiceLvl.add(this.choix);
+		choiceLvl.add(this.choiceLvlIA);
+		
 		ImagePanel panelConfirm = new ImagePanel("src/resources/background.jpg");
 		buttonPanelRobot.setBackground(Color.WHITE);
 		panelConfirm.add(this.confirmBtn);
@@ -99,6 +96,7 @@ public class NewGame extends JFrame {
 		panel.add(namePanel);
 		panel.add(buttonPanelPlayer);
 		panel.add(buttonPanelRobot);
+		panel.add(choiceLvl);
 		panel.add(panelConfirm);
 		add(panel);
 		pack();

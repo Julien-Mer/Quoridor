@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.net.Socket;
 
+import Client.Controllers.Listener;
 import Game.Square;
+import Model.ServerListener;
 
 public class Player implements Serializable {
 
@@ -21,7 +23,7 @@ public class Player implements Serializable {
 	/**
 	 * The socket used by the player
 	 */
-	private transient Socket socket; // Transient pour ne pas transmettre les informations aux autres joueurs
+	private transient ServerListener listener; // Transient pour ne pas transmettre les informations aux autres joueurs
 	
 	/**
 	 * The barriers placed by the player
@@ -41,44 +43,20 @@ public class Player implements Serializable {
 	 * @param position the position of the player
 	 * @param barriers the maximum of barriers for the player
 	 */
-	public Player(String name, Color color, Socket socket, Square position) {
+	public Player(String name, Color color, ServerListener listener, Square position) {
 		this.name = name;
 		this.color = color;
-		this.socket = socket;
+		this.listener = listener;
 		this.position = position;
 		this.barriers = new Square[10];
 	}
 	
 	/**
-	 * Get the color of the player
-	 * @param i the number of the player
-	 * @return the color of the player
+	 * Get the listener used by the player
+	 * @return the listener used by the player
 	 */
-	public static Color getColor(int i) {
-		Color res = null;
-		switch(i) {
-			case 0:
-				res = Color.BLUE;
-				break;
-			case 1:
-				res = Color.GREEN;
-				break;
-			case 2:
-				res = Color.RED;
-				break;
-			case 3:
-				res = Color.YELLOW;
-				break;
-		}
-		return res;
-	}
-	
-	/**
-	 * Get the socket used by the player
-	 * @return the socket used by the player
-	 */
-	public Socket getSocket() {
-		return this.socket;
+	public ServerListener getListener() {
+		return this.listener;
 	}
 
 	/**
