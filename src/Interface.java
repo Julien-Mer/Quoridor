@@ -3,6 +3,6 @@ import Client.Views.*;
 import Client.Views.Message;
 public class Interface{
   public static void main(String[] args){
-	HomeController hc = new HomeController();
+	  HomeController hc = new HomeController();
   }
 }

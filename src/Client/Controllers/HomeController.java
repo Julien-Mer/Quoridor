@@ -13,7 +13,7 @@ public class HomeController {
 	 * @param client The client used by the game 
 	 */
 	public HomeController() {
-		this.view = new Home(true);
+		this.view = new Home(false);
 		this.view.setVisible(true);
 		this.view.getNewGameBtn().addActionListener(new Listener(this));
 		this.view.getResumeGameBtn().addActionListener(new Listener(this));

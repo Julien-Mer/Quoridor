@@ -18,14 +18,14 @@ public class Game extends JFrame{
 	}
 	
 	public void initComponent() {
-		ImagePanel back = new ImagePanel("src/resources/background_Game.jpg");
+		JPanel back = new JPanel();
 		back.setLayout(new BorderLayout());
 		back.setPreferredSize(new Dimension(1000,600));
 		this.setResizable(false);
 		setTitle("Quoridor");
 
-		PanelInfoPlayer panLbl1 = new PanelInfoPlayer("Pierre","10","Julien","10","src/resources/background_left_panel.jpg");
-		PanelInfoPlayer panLbl2 = new PanelInfoPlayer("Baptiste","10","Max","10","src/resources/background_Game.jpg");
+		PanelInfoPlayer panLbl1 = new PanelInfoPlayer("Pierre","10","Julien","10","src/resources/background_game_haut_gauche.jpg","src/resources/background_game_bas_gauche.jpg");
+		PanelInfoPlayer panLbl2 = new PanelInfoPlayer("Baptiste","10","Max","10","src/resources/background_game_haut_droit.jpg","src/resources/background_game_bas_droit.jpg");
 		
 		ImagePanel gridGame = new ImagePanel("src/resources/background_Game.jpg");
 		gridGame.setLayout(new GridLayout(1,3));
@@ -43,7 +43,7 @@ public class Game extends JFrame{
 		panS.add(this.saveBtn,BorderLayout.WEST);
 		
 		this.titleLbl = new JLabel(new ImageIcon("src/resources/titre.png"));
-		ImagePanel panT = new ImagePanel("src/resources/background_Game.jpg");
+		ImagePanel panT = new ImagePanel("src/resources/background_game_title.jpg");
 		panT.add(this.titleLbl);
 		
 		back.add(panT,BorderLayout.NORTH);

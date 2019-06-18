@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import Client.*;
 import Server.Player;
 
-public class Listener {
+public class DataListener {
 
 	/**
 	 * The socket listened by the instance
@@ -104,7 +104,7 @@ public class Listener {
 	/**
 	 * Create a listener for the socket
 	 */
-	public Listener(Socket socket) {
+	public DataListener(Socket socket) {
 		this.dataReceived = new TreeMap<Character, Object>();
 		this.socket = socket;
 	}

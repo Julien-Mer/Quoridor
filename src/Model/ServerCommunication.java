@@ -11,13 +11,18 @@ import Game.*;
 public class ServerCommunication extends BasicCommunication {
 
 	/**
+	 * Port du serveur
+	 */
+	private final static int PORT = 1111;
+	
+	/**
 	 * Listen for new clients and creates servers
 	 */
 	public static void listen() {
 		 ServerSocket listener = null;
 		  try {
 			  System.out.println("Lancement du serveur !");
-			  listener = new ServerSocket(1111);
+			  listener = new ServerSocket(PORT);
 			  while(true) {
 				  Socket clientSocket = listener.accept();
 				  new Thread( new Runnable() {
@@ -50,12 +55,12 @@ public class ServerCommunication extends BasicCommunication {
 	}
 
 	/**
-	 * Get the data to send to show an error to a player
-	 * @param data the text of the error
-	 * @return the packet to show an error to a player
+	 * Get the data to send to show a message to a player
+	 * @param data the text of the message
+	 * @return the packet to show a message to a player
 	 */
-	public static String getErrorPacket(String data) {
-		return ERROR_PREFIX + ";" + data;
+	public static String getMessagePacket(String data) {
+		return data;
 	}
 
 }

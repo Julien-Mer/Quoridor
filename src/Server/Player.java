@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.net.Socket;
 
-import Client.Controllers.Listener;
+import Game.ColorSquare;
 import Game.Square;
-import Model.ServerListener;
+import Model.*;
 
 public class Player implements Serializable {
 
@@ -23,7 +23,7 @@ public class Player implements Serializable {
 	/**
 	 * The socket used by the player
 	 */
-	private transient ServerListener listener; // Transient pour ne pas transmettre les informations aux autres joueurs
+	private transient DataListener listener;
 	
 	/**
 	 * The barriers placed by the player
@@ -43,20 +43,29 @@ public class Player implements Serializable {
 	 * @param position the position of the player
 	 * @param barriers the maximum of barriers for the player
 	 */
-	public Player(String name, Color color, ServerListener listener, Square position) {
+	public Player(String name, Color color, DataListener listener, Square position) {
 		this.name = name;
 		this.color = color;
 		this.listener = listener;
 		this.position = position;
-		this.barriers = new Square[10];
+		this.position.setColor(this.getColor());
+		this.barriers = new Square[Board.BARRIERS];
 	}
 	
 	/**
 	 * Get the listener used by the player
 	 * @return the listener used by the player
 	 */
-	public ServerListener getListener() {
+	public DataListener getListener() {
 		return this.listener;
+	}
+	
+	/**
+	 * Set the listener used by the player
+	 * @param the listener used by the player
+	 */
+	public void setListener(DataListener listener) {
+		this.listener = listener;
 	}
 
 	/**
@@ -80,7 +89,9 @@ public class Player implements Serializable {
 	 * @param square the new position of the player
 	 */
 	public void setPosition(Square square) {
+		this.getPosition().setColor(ColorSquare.FREE);
 		this.position = square;
+		square.setColor(this.getColor());
 	}
 
 	/**
@@ -90,7 +101,7 @@ public class Player implements Serializable {
 	public Square getPosition() {
 		return this.position;
 	}
-
+	
 	/**
 	 * Add a barrier on a square
 	 * @param square the square to place the barrier
