@@ -16,6 +16,7 @@ public class NewGameController {
 	 */
 	public NewGameController() {
 		this.view = new NewGame();
+		Client.client.view = this.view;
 		this.view.setVisible(true);
 		this.view.getAddButtonPlayer().addActionListener(new Listener(this));
 		this.view.getAddButtonRobot().addActionListener(new Listener(this));

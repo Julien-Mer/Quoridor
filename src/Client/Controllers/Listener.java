@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 
+import Client.Client;
 import Client.Controllers.*;
 import Client.Controllers.Helpers.*;
 import Client.Views.Game;
@@ -176,13 +177,10 @@ public class Listener implements ActionListener {
 						this.difficultyIA = 1;
 					} else if(this.newGameController.getView().getChoiceLvl().equals("Moyen")) {
 						this.difficultyIA = 2;
-						}else {
-							this.difficultyIA = 3;
-						}
-					String infos = this.name+"-"+String.valueOf(this.nbIA)+"-"+String.valueOf(this.nbJ)+"-"+String.valueOf(this.difficultyIA);
-					//Client.client.sendData(infos);
-					GameController gc = new GameController();
-					Functions.changeView(this.newGameController.getView(), gc.getView());
+					} else {
+						this.difficultyIA = 3;
+					}
+					Client.client.newGame(nbJ, nbIA, name, this.difficultyIA);
 				}else {
 					Message message = new Message("Veuillez entrez un nom valide s'il vous plait");
 				}

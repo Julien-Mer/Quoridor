@@ -87,14 +87,10 @@ public class ServerListener extends DataListener {
 							int x = Integer.valueOf(values[0]);
 							int y = Integer.valueOf(values[1]);
 							if(listener.getPlayer() == listener.getServer().getTurnPlayer() && listener.getServer().getPlaces() == 0) {
-								System.out.println("ui");
 								if(listener.getServer().getBoard().canMove(listener.getPlayer().getPosition(), listener.getServer().getBoard().getGrid()[x][y]))
 									System.out.println("Le mouvement est valide");
 							} else {
-								if(listener.getServer().getBoard().canMove(listener.getPlayer().getPosition(), listener.getServer().getBoard().getGrid()[x][y]))
-									System.out.println("Le mouvement est valide");
-								else
-									System.out.println("Mouvement invalide");
+								System.out.println("Mouvement invalide");
 								ServerCommunication.sendData(BasicCommunication.MESSAGE_PREFIX, ServerCommunication.getMessagePacket("Ce n'est pas à votre tour de jouer"), listener); // On lui envoie un message
 							}
 							break;

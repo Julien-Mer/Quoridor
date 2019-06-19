@@ -1,4 +1,5 @@
 package Client.Controllers;
+import Client.Client;
 import Client.Views.Home;
 
 public class HomeController {
@@ -14,6 +15,7 @@ public class HomeController {
 	 */
 	public HomeController() {
 		this.view = new Home(false);
+		Client.client.view = this.view;
 		this.view.setVisible(true);
 		this.view.getNewGameBtn().addActionListener(new Listener(this));
 		this.view.getResumeGameBtn().addActionListener(new Listener(this));

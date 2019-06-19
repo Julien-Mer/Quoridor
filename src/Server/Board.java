@@ -71,7 +71,7 @@ public class Board implements Serializable {
 		int y = current.getY();
 		
 		// [0, 0]
-		if(checkPos(x+1*incX, y+1*incY) && this.grid[x+1*incX][y+1*incY].getColor().equals(ColorSquare.FREE))// [1, 0] case de barrière
+		if(checkPos(x+1*incX, y+1*incY) && this.grid[x+1*incX][y+1*incY].getColor().equals(ColorSquare.FREE))// [1, 0] pas de case de barrière
 			if(checkPos(x+2*incX, y+2*incY) && this.grid[x+2*incX][y+2*incY].getColor().equals(ColorSquare.FREE)) // [2, 0] case jouable vide
 				localPossibilities.add(this.grid[x+2*incX][y+2*incY]); // Aucun joueur, case voisine [2,0]
 			else if(checkPos(x+3*incX, y+3*incY) && checkPos(x+4*incX, y+4*incY) && this.grid[x+3*incX][y+3*incY].getColor().equals(ColorSquare.FREE) && this.grid[x+4*incX][y+4*incY].getColor().equals(ColorSquare.FREE) ) // [2, 0] avec un joueur et [3,0] et [4,0] libres	

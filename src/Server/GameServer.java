@@ -69,7 +69,7 @@ public class GameServer implements Serializable {
 		this.board = new Board();
 		for(int i = 0; i < nbAutoPlayers; i++) {
 			AutoPlayer autoPlayer = new AutoPlayer(AutoPlayer.getName(i), getColor(i), null, Board.getFirstPosition(this.board, nbPlayers, i), this.board);
-			timeLine.add(autoPlayer);
+			this.timeLine.add(autoPlayer);
 		}
 	}
 

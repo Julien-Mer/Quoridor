@@ -47,9 +47,10 @@ public class ClientCommunication extends BasicCommunication {
 	 * @param bots The number of AutoPlayers
 	 * @param players The number of players
 	 * @param name The name of the player
+	 * @param difficulty The difficulty of the AutoPlayers
 	 */
-	public static String getNewGamePacket(int bots, int players, String name) {
-		return bots + ";" + players + ";" + name;
+	public static String getNewGamePacket(int bots, int players, String name, int difficulty) {
+		return bots + ";" + players + ";" + name + ";" + difficulty;
 	}
 
 }

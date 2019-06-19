@@ -6,7 +6,12 @@ import java.net.*;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
+import javax.swing.JFrame;
+
 import Client.*;
+import Client.Controllers.*;
+import Client.Controllers.Helpers.Functions;
+import Client.Views.*;
 import Game.*;
 import Model.*;
 import Server.Player;
@@ -14,9 +19,19 @@ import Server.Player;
 public class Client extends DataListener {
 	
 	/**
-	 * Permet aux controllers de s'adresser au client
+	 * Allow the controllers to use the client
 	 */
 	public static Client client;
+	
+	/**
+	 * The current view showed
+	 */
+	public static JFrame view;
+	
+	/**
+	 * All the controllers used by the client
+	 */
+	private GameController game;
 	
 	/**
 	 * Adresse IP du serveur
@@ -41,9 +56,9 @@ public class Client extends DataListener {
 
 	}
 
-	public void newGame(int players, int bots, String name) {
+	public void newGame(int players, int bots, String name, int difficulty) {
 		try {
-			ClientCommunication.sendData(BasicCommunication.NEW_GAME_PREFIX, ClientCommunication.getNewGamePacket(bots, players, name), this);
+			ClientCommunication.sendData(BasicCommunication.NEW_GAME_PREFIX, ClientCommunication.getNewGamePacket(bots, players, name, difficulty), this);
 		} catch (IOException e) {
 			System.out.println("Impossible de créer la partie");
 		}
@@ -62,10 +77,8 @@ public class Client extends DataListener {
 	 * @throws Exception if the server is unavailable
 	 */
 	public Client() throws Exception {
-
-		//super(ClientCommunication.initialize("projet-milleetunsourires.com", 1111));
-		//super(ClientCommunication.initialize("127.0.0.1", 1111));
 		super(ClientCommunication.initialize(IP, PORT));
+		new HomeController();
 		this.client = this;
 		DataListener listener = this;
 		new Thread( new Runnable() {
@@ -79,9 +92,6 @@ public class Client extends DataListener {
 	        	analyzeData(listener);
 	        }
 	    } ).start();
-		
-		newGame(4, 2, "Test");
-		newGame(4, 2, "AA");
 	}
 	
 	/**
@@ -102,21 +112,31 @@ public class Client extends DataListener {
 								System.out.println("On a reçu le joueur: " + player.getName());
 								player.setListener(((DataListener)listener));
 								client.setPlayer(player);
+								if(!client.terminal) {
+									JFrame oldView = client.view;
+									client.game = new GameController();
+									Functions.changeView(oldView, client.game.getView());
+								}
 							}
 							break;
 						case BasicCommunication.BOARD_PREFIX:
 							System.out.println("BOARD");
 							Square[][] grid = (Square[][]) entry.getValue();
-							showGrid(grid);
-							((HumanPlayer)client.getPlayer()).updateBoard(grid);
+							if(client.terminal)
+								showGrid(grid);
+							else 
+								client.game.updateGame(grid);
 							break;
 						case BasicCommunication.TURN_PREFIX:
 							LinkedList<Player> players = (LinkedList<Player>) entry.getValue();
-							System.out.println("C'est au joueur: " + players.get(0).getName() + " de jouer");
+							if(client.terminal) {
+								System.out.println("C'est au joueur: " + players.get(0).getName() + " de jouer");
+							} else 
+								client.game.updatePlayers(players);
 							((HumanPlayer)client.getPlayer()).movePlayer(5, 10);
 							break;
 						case BasicCommunication.MESSAGE_PREFIX:
-							System.out.println(entry.getValue());
+							new Message((String)entry.getValue());
 					}
 				} catch(Exception ex) {
 					ex.printStackTrace();
@@ -127,6 +147,7 @@ public class Client extends DataListener {
 					Thread.sleep(50); // Economie d'energie
 				} catch (InterruptedException e) { } 
 			}
+			
 		}
 	}
 	
