@@ -21,6 +21,27 @@ public class DataListener {
 	private TreeMap<Character, Object> dataReceived;
 	
 	/**
+	 * The thread of the listener
+	 */
+	private Thread thread;
+	
+	/**
+	 * Get the thread used by the listener
+	 * @return the thread
+	 */
+	public Thread getThread() {
+		return this.thread;
+	}
+	
+	/**
+	 * set the thread used by the listener
+	 * @param thread the thread
+	 */
+	public void setThread(Thread thread) {
+		this.thread = thread;
+	}
+	
+	/**
 	 * The player owning the socket
 	 */
 	private Player player;
@@ -75,13 +96,14 @@ public class DataListener {
 	 */
 	public Entry<Character, Object> getFirstDataReceived() {
 		Entry<Character, Object> res = null;
-		if(this.dataReceived.size() > 0) {
-			res = this.dataReceived.firstEntry();
-			this.dataReceived.remove(res.getKey());
-		}
+		try {
+			if(this.dataReceived.size() > 0) {
+				res = this.dataReceived.firstEntry();
+				this.dataReceived.remove(res.getKey());
+			}
+		} catch(Exception ex) { }
 		return res;
 	}
-	
 
 	/**
 	 * Set the new data received

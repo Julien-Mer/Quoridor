@@ -13,10 +13,9 @@ import Game.Square;
 import Model.BasicCommunication;
 import Model.DataListener;
 import Model.ServerCommunication;
-import Model.ServerListener;
 
 public class GameServer implements Serializable {
-
+	
 	/**
 	 * The board used by the game
 	 */
@@ -26,11 +25,6 @@ public class GameServer implements Serializable {
 	 * The TimeLine of players
 	 */
 	private LinkedList<Player> timeLine;
-	
-	/**
-	 * The number of places available
-	 */
-	private int nbPlaces;
 	
 	/**
 	 * The number of players
@@ -50,7 +44,6 @@ public class GameServer implements Serializable {
 		System.out.println("Création d'un serveur (" + nbPlayers  + " joueurs, " + nbAutoPlayers + " ordinateurs)");
 		this.nbPlayers = nbPlayers;
 		this.nbAutoPlayers = nbAutoPlayers;
-		this.nbPlaces = this.nbPlayers - this.nbAutoPlayers - 1;
 		this.timeLine = new LinkedList<Player>();
 	}
 	
@@ -59,7 +52,7 @@ public class GameServer implements Serializable {
 	 * @return the number of places
 	 */
 	public int getPlaces() {
-		return this.nbPlaces;
+		return this.nbPlayers - this.timeLine.size();
 	}
 	
 	/**
@@ -68,24 +61,43 @@ public class GameServer implements Serializable {
 	public void initialize() {
 		this.board = new Board();
 		for(int i = 0; i < nbAutoPlayers; i++) {
-			AutoPlayer autoPlayer = new AutoPlayer(AutoPlayer.getName(i), getColor(i), null, Board.getFirstPosition(this.board, nbPlayers, i), this.board);
+			AutoPlayer autoPlayer = new AutoPlayer(AutoPlayer.getName(i), getColor(i), null, Board.getFirstPosition(this.board, nbPlayers,  getColor(i)), this);
 			this.timeLine.add(autoPlayer);
 		}
 	}
 
+	/**
+	 * Get the timeLine of the server
+	 * @return the timeLine of the server
+	 */
+	public LinkedList<Player> getTimeLine() {
+		return this.timeLine;
+	}
+	
 	/**
 	 * Starts the game
 	 */
 	public void start() {
 		System.out.println("Début d'une partie (" + this.nbPlayers  + " joueurs)");
 		ServerCommunication.sendDataAll(BasicCommunication.MESSAGE_PREFIX, ServerCommunication.getMessagePacket("La partie a commencé"), this.timeLine);
+		if(this.getTurnPlayer().getListener() == null) // Le premier joueur est un ordinateur
+			((AutoPlayer)this.getTurnPlayer()).play();
 	}
 
 	/**
 	 * Ends the game
 	 */
 	public void endOfGame() {
-
+		ServerCommunication.sendDataAll(BasicCommunication.END_GAME_PREFIX, this.getTurnPlayer(), this.timeLine);
+		 ServerListener.servers.remove(this);
+		 for(Player p : this.timeLine)
+			try {
+				if(p.getListener() != null) { // Si ce n'est pas un ordinateur
+					p.getListener().getSocket().close();
+					p.getListener().getThread().stop();
+					//TODO DECONNEXION
+				}
+			} catch (IOException e) { } // On détruit le listener de tous les joueurs
 	}
 
 	/**
@@ -93,7 +105,7 @@ public class GameServer implements Serializable {
 	 * @return the rules of the game
 	 */
 	public String rules() {
-		return null;
+		return "Les règles sont les règles.";
 	}
 
 	/**
@@ -101,35 +113,43 @@ public class GameServer implements Serializable {
 	 * @param object the save of the server
 	 */
 	public GameServer(Object object) {
-
+		GameServer server = ((GameServer)object);
+		this.board = server.board;
+		this.nbAutoPlayers = server.nbAutoPlayers;
+		this.timeLine = server.timeLine;
+		this.nbPlayers = server.nbPlayers;
 	}
 
 	/**
-	 * Send a save of Server to the player
-	 * @param client the client to send the save
+	 * Send a turn message to the player who has to play and sends the timeLine
+	 * @throws IOException If the listener is unavailable
 	 */
-	public void sendSave(Socket client) {
-
+	public void sendTurnInfos() throws IOException {
+		if(this.getPlaces() == 0) { // Si le serveur est lancé
+			ServerCommunication.sendDataAll(BasicCommunication.TURN_PREFIX, this.timeLine, this.timeLine); // On leur donne la liste des joueurs
+		}
 	}
-
+	
 	/**
-	 * Moves the player
-	 * @param player the player concerned
+	 * Send the player object to the player
+	 * @throws IOException If the listener is unavailable
 	 */
-	public void movePlayer(Player player) {
-
+	public void sendPlayerInfos() throws IOException {
+		for(Player p : this.timeLine)
+			if(p.getListener() != null) // Si ce n'est pas un ordinateur
+				ServerCommunication.sendData(BasicCommunication.PLAYER_PREFIX, p, p.getListener()); // On lui envoie son objet
 	}
-
+	
 	/**
 	 * Refresh infos for the players
 	 */
 	public void refreshInfos() {
 		try {
-			ServerCommunication.sendData(BasicCommunication.MESSAGE_PREFIX, ServerCommunication.getMessagePacket("C'est à votre tour de jouer"), this.timeLine.get(0).getListener());
-			ServerCommunication.sendDataAll(BasicCommunication.BOARD_PREFIX, this.board.getGrid(), this.timeLine); // On lui donne la carte
-			ServerCommunication.sendDataAll(BasicCommunication.TURN_PREFIX, this.timeLine, this.timeLine); // On lui donne la liste des joueurs
+			sendPlayerInfos();
+			ServerCommunication.sendDataAll(BasicCommunication.BOARD_PREFIX, this.board.getGrid(), this.timeLine); // On leur donne la carte
+			sendTurnInfos();
 		} catch (Exception e) {
-			 e.printStackTrace(); 
+			e.printStackTrace(); 
 		}
 		
 	}
@@ -157,26 +177,20 @@ public class GameServer implements Serializable {
 		}
 		return res;
 	}
-
 	
 	/**
 	 * Add a new player to the game
 	 * @param player the new player
 	 * @param socket the socket of the player
+	 * @param server the server of the player
 	 */
-	public Player newPlayer(String name, DataListener listener) {
-		Player player = new HumanPlayer(name, getColor(timeLine.size()), listener, Board.getFirstPosition(this.board, this.nbPlayers, timeLine.size()));
-		try {
-			ServerCommunication.sendData(BasicCommunication.NEW_PLAYER_PREFIX, player, player.getListener()); // On lui envoie son objet
-			timeLine.add(player);
-			refreshInfos();
-			System.out.println(player.getName() + " a rejoint un serveur (" + this.nbPlayers  + " joueurs)");
-			if(timeLine.size() == this.nbPlayers) 
-				this.start();
-		} catch (IOException e) {
-			System.out.println("Impossible d'ajouter le joueur à la partie");
-		}
-		this.nbPlaces = this.nbPlayers - this.timeLine.size();
+	public Player newPlayer(String name, DataListener listener, GameServer server) {
+		Player player = new HumanPlayer(name, getColor(timeLine.size()), listener, Board.getFirstPosition(this.board, this.nbPlayers, getColor(timeLine.size())), server);
+		timeLine.add(player);
+		refreshInfos();
+		System.out.println(player.getName() + " a rejoint un serveur (" + this.nbPlayers  + " joueurs)");
+		if(timeLine.size() == this.nbPlayers) 
+			this.start();
 		return player;
 	}
 
@@ -202,6 +216,23 @@ public class GameServer implements Serializable {
 	 */
 	 public Player getTurnPlayer() {
 		 return this.timeLine.get(0);
+	 }
+	 
+	 public void nextTurnPlayer() {
+		 if(!this.getBoard().hasWinned(this.getTurnPlayer())) {
+			 this.timeLine.add(this.timeLine.remove(0)); // On met le joueur courant à la fin de la timeLine
+			 refreshInfos();
+			 if(this.getTurnPlayer().getNumberBarriersLeft() == 0 && this.board.getMovementsPossible(this.getTurnPlayer().getPosition()).isEmpty()) {
+				 try {
+					ServerCommunication.sendData(BasicCommunication.MESSAGE_PREFIX, ServerCommunication.getMessagePacket("Vous ne pouvez pas jouer donc vous passez votre tour."), this.getTurnPlayer().getListener());
+				} catch (IOException e) { }
+				nextTurnPlayer();
+			 } else if(this.getTurnPlayer().getListener() == null) // C'est un ordinateur
+				 this.getTurnPlayer().play();
+		 } else {
+			 this.endOfGame();
+		 }
+		 System.out.println("Number of active threads from the given thread: " + Thread.activeCount());
 	 }
 	 
 	 /**

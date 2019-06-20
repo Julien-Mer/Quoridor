@@ -11,13 +11,14 @@ import Client.HumanPlayer;
 public class BasicCommunication {
 	
 	public static final char TURN_PREFIX = 'T';
-	public static final char NEW_PLAYER_PREFIX = 'A';
+	public static final char PLAYER_PREFIX = 'A';
 	public static final char END_GAME_PREFIX = 'F';
-	public static final char MESSAGE_PREFIX = 'E';
+	public static final char MESSAGE_PREFIX = 'I';
 	public static final char NEW_GAME_PREFIX = 'N';
 	public static final char BOARD_PREFIX = 'B';
 	public static final char PLACE_BARRIER_PREFIX = 'P';
 	public static final char MOVE_PREFIX = 'M';
+	public static final char RULES_PREFIX = 'R';
 	
 	/**
 	 * Serialize an object and send it to the client

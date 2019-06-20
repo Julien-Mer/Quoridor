@@ -29,8 +29,8 @@ public class ClientCommunication extends BasicCommunication {
 	 * @param y the y position of the barrier
 	 * @param orientation the orientation of the barrier
 	 */
-	public static String getPlaceBarrierPacket(int x, int y, int orientation) {
-		return x + ";" + y + ";" + orientation;
+	public static String getPlaceBarrierPacket(int x1, int y1, int x2, int y2) {
+		return x1 + ";" + y1 + ";" + x2 + ";" + y2;
 	}
 
 	/**

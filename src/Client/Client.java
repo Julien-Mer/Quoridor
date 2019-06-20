@@ -92,6 +92,7 @@ public class Client extends DataListener {
 	        	analyzeData(listener);
 	        }
 	    } ).start();
+		this.terminal = true;
 	}
 	
 	/**
@@ -106,37 +107,54 @@ public class Client extends DataListener {
 				Player player = null;
 				try {
 					switch(entry.getKey()) { // On s'intéresse au préfixe
-						case BasicCommunication.NEW_PLAYER_PREFIX: // On va créér un nouveau joueur
-							if(client.getPlayer() == null) { // On vérifie que le client n'a pas déjà un joueur
-								player = (HumanPlayer) entry.getValue();
-								System.out.println("On a reçu le joueur: " + player.getName());
-								player.setListener(((DataListener)listener));
-								client.setPlayer(player);
+						case BasicCommunication.PLAYER_PREFIX: // On reçoit notre joueur
+							player = (HumanPlayer) entry.getValue();
+							player.setListener(((DataListener)listener));
+							if(client.getPlayer() == null)
 								if(!client.terminal) {
 									JFrame oldView = client.view;
 									client.game = new GameController();
 									Functions.changeView(oldView, client.game.getView());
-								}
-							}
+								} else
+									((HumanPlayer)player).showInfos();
+							client.setPlayer(player);
 							break;
-						case BasicCommunication.BOARD_PREFIX:
-							System.out.println("BOARD");
+						case BasicCommunication.BOARD_PREFIX: // On reçoit le tableau à jour
 							Square[][] grid = (Square[][]) entry.getValue();
 							if(client.terminal)
-								showGrid(grid);
+								((HumanPlayer)client.getPlayer()).showGrid(grid);
 							else 
 								client.game.updateGame(grid);
 							break;
-						case BasicCommunication.TURN_PREFIX:
+						case BasicCommunication.TURN_PREFIX: // On reçoit la timeLine
 							LinkedList<Player> players = (LinkedList<Player>) entry.getValue();
-							if(client.terminal) {
-								System.out.println("C'est au joueur: " + players.get(0).getName() + " de jouer");
+							if(players.get(0).getColor().equals(client.getPlayer().getColor())) {
+								if(client.terminal)
+									new Thread( new Runnable() {
+								        public void run()  {
+								        	((HumanPlayer)client.getPlayer()).play();
+								        }
+								    } ).start();
+								else 
+									new Message("C'est à votre tour de jouer");
 							} else 
-								client.game.updatePlayers(players);
-							((HumanPlayer)client.getPlayer()).movePlayer(5, 10);
+								if(client.terminal) 
+									System.out.println("C'est au joueur: " + players.get(0).getName() + " de jouer");
+								else 
+									client.game.updatePlayers(players);
+							break;
+						case BasicCommunication.END_GAME_PREFIX:
+							player = (Player) entry.getValue();
+							if(client.terminal)
+								System.out.println("Le joueur: " + player.getName() + " a gagné la partie !");
+							else
+								new Message("Le joueur: " + player.getName() + " a gagné la partie !");
 							break;
 						case BasicCommunication.MESSAGE_PREFIX:
-							new Message((String)entry.getValue());
+							if(client.terminal)
+								System.out.println((String)entry.getValue());
+							else
+								new Message((String)entry.getValue());
 					}
 				} catch(Exception ex) {
 					ex.printStackTrace();
@@ -150,39 +168,5 @@ public class Client extends DataListener {
 			
 		}
 	}
-	
-	/**
-	 * Displays the grid
-	 * grid the grid to display
-	 */
-	 public static void showGrid(Square[][] grid) {
-		 String res = "";
-		 System.out.println("start");
-		 for(int x = 0; x <= grid[0].length+1; x++) 
-			 res += "_";
-		 res += "\n";
-		 for(int y = 0; y < grid.length; y++) {
-			 res += "|";
-				for(int x = 0; x < grid[0].length; x++) {
-					if(grid[x][y].getColor().equals(ColorSquare.BARRIER))
-						res += "X";
-					else if(grid[x][y].getColor().equals(ColorSquare.YELLOW))
-						res += "Y";
-					else if(grid[x][y].getColor().equals(ColorSquare.BLUE))
-						res += "B";
-					else if(grid[x][y].getColor().equals(ColorSquare.GREEN))
-						res += "G";
-					else if(grid[x][y].getColor().equals(ColorSquare.RED))
-						res += "R";
-					else
-						res += " ";
-				}
-		 	res += "|\n";
-	 	}
-		 for(int x = 0; x <= grid[0].length+1; x++) 
-			 res += "_";
-		 res += "\n";
-		System.out.println(res);
-	 }
 	
 }

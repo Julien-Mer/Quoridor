@@ -3,6 +3,7 @@ package Server;
 import java.awt.Color;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import Game.ColorSquare;
 import Game.Square;
@@ -28,13 +29,23 @@ public class Player implements Serializable {
 	/**
 	 * The barriers placed by the player
 	 */
-	private Square[] barriers;
+	private ArrayList<Square> barriers;
 	
 	/**
 	 * The position of the player
 	 */
 	private Square position;
 
+	/**
+	 * The number of barriers
+	 */
+	private int nbrBarriers;
+	
+	/**
+	 * The server of the player
+	 */
+	private GameServer server;
+	
 	/**
 	 * Creates a player
 	 * @param name the name of the player
@@ -43,13 +54,22 @@ public class Player implements Serializable {
 	 * @param position the position of the player
 	 * @param barriers the maximum of barriers for the player
 	 */
-	public Player(String name, Color color, DataListener listener, Square position) {
+	public Player(String name, Color color, DataListener listener, Square position, GameServer server) {
 		this.name = name;
 		this.color = color;
 		this.listener = listener;
 		this.position = position;
 		this.position.setColor(this.getColor());
-		this.barriers = new Square[Board.BARRIERS];
+		this.server = server;
+		this.barriers = new ArrayList<Square>();
+		this.nbrBarriers = Board.BARRIERS;
+	}
+	
+	/**
+	 * The play method of the player
+	 */
+	public void play() {
+		System.out.println("Play");
 	}
 	
 	/**
@@ -85,16 +105,6 @@ public class Player implements Serializable {
 	}
 	
 	/**
-	 * Set the new position of the player
-	 * @param square the new position of the player
-	 */
-	public void setPosition(Square square) {
-		this.getPosition().setColor(ColorSquare.FREE);
-		this.position = square;
-		square.setColor(this.getColor());
-	}
-
-	/**
 	 * Get the position of the player
 	 * @return the position of the player
 	 */
@@ -103,11 +113,51 @@ public class Player implements Serializable {
 	}
 	
 	/**
-	 * Add a barrier on a square
-	 * @param square the square to place the barrier
+	 * Get the number of barriers left
+	 * @return the number of barriers left
 	 */
-	public void addBarrier(Square square) {
-		
+	public int getNumberBarriersLeft() {
+		return this.nbrBarriers - this.barriers.size()/2;
+	}
+	
+	/**
+	 * Get the server of the listener
+	 * @return the server of the listener
+	 */
+	public GameServer getServer() {
+		return this.server;
+	}
+	
+	/**
+	 * Set the server of the player
+	 * @param server the server of the player
+	 */
+	public void setServer(GameServer server) {
+		this.server = server;
+	}
+	
+	/**
+	 * Moves the player
+	 * @param square the new position of the player
+	 */
+	public void movePlayer(Square square) {
+		this.getPosition().setColor(ColorSquare.FREE);
+		this.position = square;
+		square.setColor(this.getColor());
+		this.server.nextTurnPlayer();
+	}
+	
+	/**
+	 * Add a barrier on a square
+	 * @param square1 the first square to place a barrier
+	 * @param square2 the second square to place a barrier
+	 */
+	public void addBarrier(Square square1, Square square2) {
+		this.barriers.add(square1);
+		this.barriers.add(square2);
+		square1.setColor(ColorSquare.BARRIER);
+		square2.setColor(ColorSquare.BARRIER);
+		this.server.nextTurnPlayer();
 	}
 
 }
