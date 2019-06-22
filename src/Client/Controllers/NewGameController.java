@@ -24,6 +24,7 @@ public class NewGameController {
 		this.view.getRemoveButtonRobot().addActionListener(new Listener(this));
 		this.view.getConfirmBtn().addActionListener(new Listener(this));
 		this.view.getChoiceLvl().addActionListener(new Listener(this));
+		this.view.getTerm().addActionListener(new Listener(this));
 	}
 	
 	/**

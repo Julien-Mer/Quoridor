@@ -15,26 +15,28 @@ public class GameController {
 	 * The Game view
 	 */
 	private Game view;
-
+	
+	private GamePanelController gamePanelController;
 	/**
 	 * The constructor of GameController
 	 * @param client the client used by the game
 	 */
+	@SuppressWarnings("static-access")
 	public GameController() {
+		this.gamePanelController = new GamePanelController();
 		this.view = new Game();
 		this.view.setVisible(true);
+		this.view.getSaveBtn().addActionListener(new Listener(this));
+		this.view.getBarrierBtn().addActionListener(new Listener(this));
 		Client.client.view = this.view;
 	}
 	
 	public void updateGame(Square[][] square) {
-		//UPDATE ON BOARD AVEC MES SQUARES
-		//Cette méthode est appelée dès qu'un joueur joue par exemple
+		this.view.setGrid(square);
 	}
 	
 	public void updatePlayers(LinkedList<Player> players) {
-		// Je t'envoie les joueurs de la partie
-		// A chaque fois que quelqu'un joue ou au début de la partie aussi ou dès que quelqu'un rejoint
-		// les éléments sont dans l'ordre de jeu, le get(0) est donc le joueur qui doit jouer
+		this.view.updateP(players);
 	}
 	
 	/**
@@ -48,7 +50,7 @@ public class GameController {
 	 *  Method which return the current frame of the game
 	 * @return the current frame of the game
 	 */
-	public JFrame getView() {
+	public Game getView() {
 		return this.view;
 	}
 

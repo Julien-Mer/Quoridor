@@ -24,6 +24,8 @@ public class NewGame extends JFrame {
 	private JLabel nameLbl;
 	private JTextField nameTextField;
 	private RoundedButton confirmBtn;
+	private JLabel checkTerm;
+	private JRadioButton checkTermY;
 	@SuppressWarnings("rawtypes")
 	private JComboBox choiceLvlIA;
 	private JLabel choix;
@@ -38,7 +40,7 @@ public class NewGame extends JFrame {
 	public NewGame() {
 		ImagePanel panel = new ImagePanel("src/resources/background.jpg");
 		panel.setBackground(Color.white);
-		panel.setLayout(new GridLayout(5, 1));
+		panel.setLayout(new GridLayout(6, 1));
 		panel.setPreferredSize(new Dimension(500,500));
 		
 		ImagePanel namePanel = new ImagePanel("src/resources/background_first_panel.jpg");
@@ -87,6 +89,13 @@ public class NewGame extends JFrame {
 		buttonPanelRobot.add(countLblRobot);
 		buttonPanelRobot.add(this.addButtonRobot);
 		
+		this.checkTerm = new JLabel("Version terminal: ");
+		this.checkTermY = new JRadioButton();
+		ImagePanel btnTermPanel = new ImagePanel("src/resources/background_third_panel.jpg");
+		btnTermPanel.add(this.checkTerm);
+		btnTermPanel.add(this.checkTermY);
+		
+		
 		ImagePanel choiceLvl = new ImagePanel("src/resources/background_fourth_panel.jpg");
 		choiceLvl.add(this.choix);
 		choiceLvl.add(this.choiceLvlIA);
@@ -99,9 +108,19 @@ public class NewGame extends JFrame {
 		panel.add(buttonPanelPlayer);
 		panel.add(buttonPanelRobot);
 		panel.add(choiceLvl);
+		panel.add(btnTermPanel);
 		panel.add(panelConfirm);
 		add(panel);
 		pack();
+	}
+	
+	
+	/**
+	 * Method which return the JRadioButton for the terminal version
+	 * @return the JRadioButton for the terminal version
+	 */
+	public JRadioButton getTerm() {
+		return this.checkTermY;
 	}
 	
 	/**

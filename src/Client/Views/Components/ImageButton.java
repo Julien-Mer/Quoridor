@@ -17,7 +17,7 @@ public class ImageButton extends JButton {
     
     public ImageButton(String image) {
 		try { 
-			this.image = ImageIO.read(getClass().getResource("/resources/" + image));
+			this.image = ImageIO.read(getClass().getResource("/resources/"+image));
 		} catch (IOException e) {}
 		this.setPreferredSize(new Dimension(this.image.getWidth(), this.image.getHeight()));
         this.setFocusPainted(false);

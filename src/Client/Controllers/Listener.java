@@ -2,21 +2,27 @@ package Client.Controllers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JTable;
 
 import Client.Client;
 import Client.Controllers.*;
 import Client.Controllers.Helpers.*;
 import Client.Views.Game;
+import Client.Views.InputBarrier;
 import Client.Views.Message;
 
-public class Listener implements ActionListener {
+public class Listener extends MouseAdapter implements ActionListener {
 	private HomeController homeController;
 	private GameController gameController;
 	private NewGameController newGameController;
+	private GamePanelController gamePanelController;
 	private String name;
 	private int nbIA;
 	private int nbJ;
 	private int difficultyIA;
+	private boolean terminal;
 	/**
 	 * Construct the ActionListener for the HomeController
 	 * @param homeController the HomeController
@@ -39,6 +45,14 @@ public class Listener implements ActionListener {
 	 */
 	public Listener(NewGameController newGameController) {
 		this.newGameController = newGameController;
+	}
+	
+	/**
+	 * Construct the MouseListener for the GamePanelController
+	 * @param gamePanelController the GamePanelController
+	 */
+	public Listener(GamePanelController gamePanelController) {
+		this.gamePanelController = gamePanelController;
 	}
 
 	/**
@@ -165,7 +179,7 @@ public class Listener implements ActionListener {
 					if(Integer.parseInt(this.newGameController.getView().getCountLblRobot().getText())==0) {
 						this.newGameController.getView().setRemoveButtonRobot(false);
 					}
-				}
+				}	
 			}
 			
 			if(event.getSource()==this.newGameController.getView().getConfirmBtn()) {
@@ -177,12 +191,44 @@ public class Listener implements ActionListener {
 						this.difficultyIA = 1;
 					} else if(this.newGameController.getView().getChoiceLvl().equals("Moyen")) {
 						this.difficultyIA = 2;
-					} else {
+					}
+					if(this.newGameController.getView().getChoiceLvl().equals("Difficile")){
 						this.difficultyIA = 3;
 					}
-					Client.client.newGame(nbJ, nbIA, name, this.difficultyIA);
+					if(this.newGameController.getView().getTerm().isSelected()) {
+						this.terminal = true;
+					}else {
+						this.terminal = false;
+					}
+					GameController g = new GameController();
+					Client.client.newGame(this.nbJ, this.nbIA, this.name, this.difficultyIA);
+					//Client.client.setTerminal(terminal);
 				}else {
 					Message message = new Message("Veuillez entrez un nom valide s'il vous plait");
+				}
+			}
+		}
+		
+		if(this.gameController!=null) {
+			if(event.getSource()==this.gameController.getView().getSaveBtn()) {
+				Message msg = new Message("Partie sauvegardee!");
+				this.gameController.saveGame();
+			}
+			if(event.getSource()==this.gameController.getView().getBarrierBtn()) {
+				InputBarrier barr = new InputBarrier();
+				int[] res = barr.choice();
+				//Client.client.getPlayer().placeBarrier(res[0],res[1],res[2],res[3]);
+			}
+		}
+	}
+	
+	public void mouseClicked(MouseEvent evt) {
+		if(this.gamePanelController!=null) {
+			for(int i=0;i<this.gamePanelController.getGrid().length;i++) {
+				for(int j=0;j<this.gamePanelController.getGrid().length;j++) {
+					if(evt.getSource()==this.gamePanelController.getLbl(i,j)) {
+						//Client.client.getPlayer().movePlayer(i,j);
+					}
 				}
 			}
 		}
