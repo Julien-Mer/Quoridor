@@ -29,7 +29,7 @@ public class BasicView extends JFrame{
 	 */
 	public BasicView(Dimension dimension, Component component) {
 		this.component = component;
-		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ImagePanel backgroundPanel = new ImagePanel(Resources.BACKGROUND_IMAGE);
 		backgroundPanel.setLayout(new BorderLayout());
 		this.setPreferredSize(dimension);

@@ -21,11 +21,11 @@ public class GameController extends BasicController {
 	/**
 	 * Constructor of GameController
 	 */
-	public GameController() {
-		Game game = new Game();
+	public GameController(boolean save) {
+		Game game = new Game(save);
 		super.initView(new Dimension(950,850), game);
-		
-		game.getSaveBtn().addActionListener(new Listener(this));
+		if(save)
+			game.getSaveBtn().addActionListener(new Listener(this));
 		game.getBarrierBtn().addActionListener(new Listener(this));
 	}	
 	

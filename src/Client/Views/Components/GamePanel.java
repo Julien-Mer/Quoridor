@@ -53,9 +53,9 @@ public class GamePanel extends JPanel {
     	JLabel lbl = null;
     	try { 
     		lbl = new JLabel(new ImageIcon(ImageIO.read(getClass().getResource(pathToImage))));
+    		 lbl.setHorizontalAlignment(JTextField.CENTER);
+    	     lbl.setEnabled(true);
 		} catch (IOException e) {}
-        lbl.setHorizontalAlignment(JTextField.CENTER);
-        lbl.setEnabled(true);
         return lbl;
     } 
 

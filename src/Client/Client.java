@@ -159,7 +159,7 @@ public class Client extends DataListener {
 							if(client.getPlayer() == null)
 								if(!client.terminal) {
 									JFrame oldView = client.view;
-									client.game = new GameController();
+									client.game = new GameController(player.getServer().getNbPlayers() == player.getServer().getNbAutoJoueurs()+1);
 									Functions.changeView(oldView, client.game.getView());
 								} else {
 									try { client.view.dispose(); } catch(Exception ex) { } // On ferme la page de lancement

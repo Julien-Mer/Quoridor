@@ -49,7 +49,7 @@ public class Game extends JPanel {
 	/**
 	 * Constructor of Game
 	 */
-	public Game() {
+	public Game(boolean save) {
 		this.setOpaque(false);
 		JPanel back = new JPanel();
 		back.setLayout(new BorderLayout());
@@ -80,19 +80,19 @@ public class Game extends JPanel {
 		gridGame.add(gamePanel);
 		gridGame.add(this.panRight);
 		
-		this.saveBtn = new RoundedButton(50, Resources.BTN_COLOR);
-		this.saveBtn.setText("Sauvegarder et quitter");
-		this.saveBtn.setForeground(Resources.BTN_TEXT_COLOR);
-		
-		this.placeBarrierBtn = new RoundedButton(50, Resources.BTN_COLOR);
-		this.placeBarrierBtn.setText("Placer une barrière");
-		this.placeBarrierBtn.setForeground(Resources.BTN_TEXT_COLOR);
-
 		JPanel southPanel = new JPanel();
 		southPanel.setOpaque(false);
 		southPanel.setLayout(new BorderLayout());
 		southPanel.setPreferredSize(new Dimension(40,40));
+		this.saveBtn = new RoundedButton(50, Resources.BTN_COLOR);
+		this.saveBtn.setText("Sauvegarder et quitter");
+		if(!save)
+			this.saveBtn.setEnabled(false);
+		this.saveBtn.setForeground(Resources.BTN_TEXT_COLOR);
 		southPanel.add(this.saveBtn,BorderLayout.WEST);
+		this.placeBarrierBtn = new RoundedButton(50, Resources.BTN_COLOR);
+		this.placeBarrierBtn.setText("Placer une barrière");
+		this.placeBarrierBtn.setForeground(Resources.BTN_TEXT_COLOR);
 		southPanel.add(this.placeBarrierBtn,BorderLayout.EAST);
 		
 		JPanel spacerSouthPanel = new JPanel();
