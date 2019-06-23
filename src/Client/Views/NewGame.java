@@ -4,123 +4,126 @@ package Client.Views;
 import javax.swing.*;
 import Client.Views.Components.ImageButton;
 import Client.Views.Components.RoundedButton;
+import Client.Views.Models.Resources;
 import Client.Views.Components.ImagePanel;
 import javax.swing.JComboBox;
 
 
 import java.awt.*;
 
-public class NewGame extends JFrame {
+public class NewGame extends JPanel {
+	
 	private int number=0;
-	private static final long serialVersionUID = -8380809043760417461L;
 	private ImageButton addButtonPlayer;
 	private ImageButton removeButtonPlayer;
 	private JLabel countLblPlayer;
 	private JLabel countLblRobot;
 	private JLabel playerLbl;
-	private JLabel robotLbl;
 	private ImageButton addButtonRobot;
 	private ImageButton removeButtonRobot;
-	private JLabel nameLbl;
 	private JTextField nameTextField;
 	private RoundedButton confirmBtn;
-	private JLabel checkTerm;
-	private JRadioButton checkTermY;
-	@SuppressWarnings("rawtypes")
 	private JComboBox choiceLvlIA;
-	private JLabel choix;
-	
+	private JComboBox choiceTheme;
 	
 	/**
-	* Create the GUI and show it. For thread safety,
-	* this method should be invoked from the
-	* event-dispatching thread.
-	*/
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	 * Constructor of the newGame Panel
+	 */
 	public NewGame() {
-		ImagePanel panel = new ImagePanel("src/resources/background.jpg");
-		panel.setBackground(Color.white);
-		panel.setLayout(new GridLayout(6, 1));
-		panel.setPreferredSize(new Dimension(500,500));
+		JPanel spacePanel1 = new JPanel();
+		spacePanel1.setOpaque(false);
 		
-		ImagePanel namePanel = new ImagePanel("src/resources/background_first_panel.jpg");
-		namePanel.setBackground(Color.WHITE);
-		this.nameLbl = new JLabel("Votre nom: ");
+		this.setOpaque(false);
+		JPanel panel = new JPanel();
+		panel.setOpaque(false);
+		panel.setLayout(new GridLayout(7, 1));
+		
+		Font font = new Font("Dialog", Font.PLAIN, 18);
+		
+		JPanel namePanel = new JPanel();
+		namePanel.setOpaque(false);
+		JLabel nameLbl = new JLabel("Votre nom: ");
+		nameLbl.setForeground(Resources.TEXT_COLOR);
+		nameLbl.setFont(font);
 		this.nameTextField = new JTextField();
-		this.nameTextField.setPreferredSize(new Dimension(100,20));
-		this.confirmBtn = new RoundedButton(50,Color.WHITE);
-		this.confirmBtn.setText("Confirmer");
-		namePanel.add(this.nameLbl);
+		this.nameTextField.setPreferredSize(new Dimension(100,30));
+		namePanel.add(nameLbl);
 		namePanel.add(this.nameTextField);
-		
-		Object[] levels = new Object[] {"Facile","Moyen","Difficile"};
-		this.choiceLvlIA = new JComboBox(levels);
-		this.choix = new JLabel("Niveau de l'IA: ");
-		
+		 
 		this.playerLbl = new JLabel("Nombre de joueurs: ");
+		playerLbl.setForeground(Resources.TEXT_COLOR);
+		playerLbl.setFont(font);
 		
 		this.countLblPlayer = new JLabel("2");
-		this.countLblPlayer.setFont(new Font("Dialog", Font.PLAIN, 20));
+		countLblPlayer.setForeground(Resources.TEXT_COLOR);
+		countLblPlayer.setFont(font);
 		
 		this.countLblRobot = new JLabel("0");
-		this.countLblRobot.setFont(new Font("Dialog", Font.PLAIN, 20));
+		countLblRobot.setForeground(Resources.TEXT_COLOR);
+		countLblRobot.setFont(font);
 		
-		this.robotLbl = new JLabel("Nombre d'IA: ");
+		JLabel robotLbl = new JLabel("Nombre d'IA: ");
+		robotLbl.setForeground(Resources.TEXT_COLOR);
+		robotLbl.setFont(font);
 		
-		this.addButtonPlayer = new ImageButton("bouton_plus.png");
-		this.removeButtonPlayer = new ImageButton("bouton_moins.png");
+		this.addButtonPlayer = new ImageButton("more.png");
+		this.removeButtonPlayer = new ImageButton("less.png");
 		this.removeButtonPlayer.setVisible(false);
 		
-		this.addButtonRobot = new ImageButton("bouton_plus.png");
-		this.removeButtonRobot = new ImageButton("bouton_moins.png");
+		this.addButtonRobot = new ImageButton("more.png");
+		this.removeButtonRobot = new ImageButton("less.png");
 		this.removeButtonRobot.setVisible(false);
 		
-		ImagePanel buttonPanelPlayer = new ImagePanel("src/resources/background_second_panel.jpg");
-		buttonPanelPlayer.setBackground(Color.WHITE);
+		JPanel buttonPanelPlayer = new JPanel();
+		buttonPanelPlayer.setOpaque(false);
 		buttonPanelPlayer.add(this.playerLbl);
 		buttonPanelPlayer.add(this.removeButtonPlayer);
 		buttonPanelPlayer.add(countLblPlayer);
 		buttonPanelPlayer.add(this.addButtonPlayer);
 		
-		ImagePanel buttonPanelRobot = new ImagePanel("src/resources/background_third_panel.jpg");
-		buttonPanelRobot.setBackground(Color.WHITE);
-		buttonPanelRobot.add(this.robotLbl);
+		JPanel buttonPanelRobot = new JPanel();
+		buttonPanelRobot.setOpaque(false);
+		buttonPanelRobot.add(robotLbl);
 		buttonPanelRobot.add(this.removeButtonRobot);
 		buttonPanelRobot.add(countLblRobot);
 		buttonPanelRobot.add(this.addButtonRobot);
 		
-		this.checkTerm = new JLabel("Version terminal: ");
-		this.checkTermY = new JRadioButton();
-		ImagePanel btnTermPanel = new ImagePanel("src/resources/background_third_panel.jpg");
-		btnTermPanel.add(this.checkTerm);
-		btnTermPanel.add(this.checkTermY);
 		
+		Object[] levels = new Object[] {"Facile","Moyen","Difficile"};
+		this.choiceLvlIA = new JComboBox(levels);
+		JLabel choixIaLbl = new JLabel("Niveau de l'IA: ");
+		choixIaLbl.setForeground(Resources.TEXT_COLOR);
+		choixIaLbl.setFont(font);
+		JPanel choiceIaPanel = new JPanel();
+		choiceIaPanel.setOpaque(false);
+		choiceIaPanel.add(choixIaLbl);
+		choiceIaPanel.add(this.choiceLvlIA);
 		
-		ImagePanel choiceLvl = new ImagePanel("src/resources/background_fourth_panel.jpg");
-		choiceLvl.add(this.choix);
-		choiceLvl.add(this.choiceLvlIA);
+		this.choiceTheme = new JComboBox(Resources.themes);
+		this.choiceTheme.setSelectedItem(Resources.theme);
+		JLabel choixThemeLbl = new JLabel("Theme du jeu: ");
+		choixThemeLbl.setForeground(Resources.TEXT_COLOR);
+		choixThemeLbl.setFont(font);
+		JPanel choiceThemePanel = new JPanel();
+		choiceThemePanel.setOpaque(false);
+		choiceThemePanel.add(choixThemeLbl);
+		choiceThemePanel.add(this.choiceTheme);
 		
-		ImagePanel panelConfirm = new ImagePanel("src/resources/background_fifth_panel.jpg");
-		buttonPanelRobot.setBackground(Color.WHITE);
+		JPanel panelConfirm = new JPanel();
+		panelConfirm.setOpaque(false);
+		this.confirmBtn = new RoundedButton(50, Resources.BTN_COLOR);
+		this.confirmBtn.setText("Commencer");
+		this.confirmBtn.setForeground(Resources.BTN_TEXT_COLOR);
 		panelConfirm.add(this.confirmBtn);
 		
 		panel.add(namePanel);
 		panel.add(buttonPanelPlayer);
 		panel.add(buttonPanelRobot);
-		panel.add(choiceLvl);
-		panel.add(btnTermPanel);
+		panel.add(choiceIaPanel);
+		panel.add(spacePanel1);
+		panel.add(choiceThemePanel);
 		panel.add(panelConfirm);
 		add(panel);
-		pack();
-	}
-	
-	
-	/**
-	 * Method which return the JRadioButton for the terminal version
-	 * @return the JRadioButton for the terminal version
-	 */
-	public JRadioButton getTerm() {
-		return this.checkTermY;
 	}
 	
 	/**
@@ -130,13 +133,21 @@ public class NewGame extends JFrame {
 	public JTextField getNameTextField() {
 		return this.nameTextField;
 	}
+	
 	/**
 	 * Method which return the JComboBox
 	 * @return the JComboBox
 	 */
-	@SuppressWarnings("rawtypes")
 	public JComboBox getChoiceLvl() {
 		return this.choiceLvlIA;
+	}
+	
+	/**
+	 * Method which return the JComboBox
+	 * @return the JComboBox
+	 */
+	public JComboBox getTheme() {
+		return this.choiceTheme;
 	}
 	
 	/**

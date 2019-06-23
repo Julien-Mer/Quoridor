@@ -1,34 +1,29 @@
 package Client.Controllers;
-import Client.Client;
+
+import java.awt.Dimension;
 import Client.Views.Home;
+import Client.Views.Models.BasicController;
+import Model.File;
 
-public class HomeController {
+public class HomeController extends BasicController {
 
-	/**
-	 * The Home view
-	 */
-	private Home view;
-	
 	/**
 	 * Constructor of HomeController
-	 * @param client The client used by the game 
 	 */
 	public HomeController() {
-		this.view = new Home(false);
-		Client.client.view = this.view;
-		this.view.setVisible(true);
-		this.view.getNewGameBtn().addActionListener(new Listener(this));
-		this.view.getResumeGameBtn().addActionListener(new Listener(this));
-		this.view.getLearningModeBtn().addActionListener(new Listener(this));
-	}
-	
-	/**
-	 * Method which return the current view
-	 * @return the current view
-	 */
-	public Home getView() {
-		return this.view;
-	}
-	
+		boolean resumeGame = false;
+		if(File.readObject(File.SAVE_FILE) != null)
+			resumeGame = true;
+		Home home = new Home(resumeGame);
+		Dimension dimension = new Dimension(600, 375);
+		if(resumeGame)
+			dimension = new Dimension(600, 450);
+		super.initView(dimension, home);
+		
+		home.getNewGameBtn().addActionListener(new Listener(this));
+		if(resumeGame)
+			home.getResumeGameBtn().addActionListener(new Listener(this));
+		home.getLearningModeBtn().addActionListener(new Listener(this));
+	}	
 
 }

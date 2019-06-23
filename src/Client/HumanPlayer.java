@@ -6,16 +6,12 @@ import java.util.Scanner;
 
 import Game.*;
 import Model.*;
+import Model.File;
 import Server.GameServer;
 import Server.Player;
 
 public class HumanPlayer extends Player implements Serializable {
 
-	/**
-	 * Scanner to receive user input stream
-	 */
-	private Scanner scan;
-	
 	/**
 	 * Creates a player
 	 * @param name the name of the player
@@ -32,7 +28,7 @@ public class HumanPlayer extends Player implements Serializable {
 	 * Ask the HumanPlayer to play (only if in console mode)
 	 */
 	public void play() {
-		this.scan = new Scanner(System.in);
+		Scanner scan = new Scanner(System.in);
 		showInfos();
 		boolean played = false;
 		System.out.println("C'est à votre tour de jouer\n\n"
@@ -44,31 +40,38 @@ public class HumanPlayer extends Player implements Serializable {
 				+ "ex: M 2,0 pour aller sur la case de coordonnées 2,0\n"
 				+ "Attention les coordonnées impaires sont réservées au barrières et inversement les coordonnées paires sont réservées aux joueurs.\n"
 				+ "- Afficher les règles: rules");
+		if(this.getServer().getNbAutoJoueurs() == this.getServer().getNbPlayers()-1)
+			System.out.println("- Sauvegarder et quitter la partie: save");
+		
 		while(!played) {
-			String ins = scan.nextLine();
 			try {
-				while(!ins.toUpperCase().contains("P") && !ins.toUpperCase().contains("M") && !ins.equalsIgnoreCase("rules")) {
-					System.out.println("Entrée invalide !");
-					ins = scan.nextLine();
-				}
+				String ins = scan.nextLine();
+				played = true;
 				if(ins.toUpperCase().contains("M")) {
-					String[] values = ins.replace(" ", "").replace("M", "").split(",");
-					int x = Integer.valueOf(values[0]);
-					int y = Integer.valueOf(values[1]);
+					String[] values = ins.split(" ");
+					int x = Integer.valueOf(values[1].split(",")[0]);
+					int y = Integer.valueOf(values[1].split(",")[1]);
 					movePlayer(x, y);
-					played = true;
 				} else if(ins.toUpperCase().contains("P")) {
-					String[] values = ins.replace(" ", "").replace("P", "").split(",");
-					int x1 = Integer.valueOf(values[0]);
-					int y1 = Integer.valueOf(values[1]);
-					int x2 = Integer.valueOf(values[2]);
-					int y2 = Integer.valueOf(values[3]);
+					String[] values = ins.split(" ");
+					int x1 = Integer.valueOf(values[1].split(",")[0]);
+					int y1 = Integer.valueOf(values[1].split(",")[1]);
+					int x2 = Integer.valueOf(values[2].split(",")[0]);
+					int y2 = Integer.valueOf(values[2].split(",")[1]);
 					placeBarrier(x1, y1, x2, y2);
-					played = true;
 				} else if(ins.equalsIgnoreCase("rules")) {
 					showRules();
+					played = false;
+				} else if(ins.equalsIgnoreCase("save") && this.getServer().getNbAutoJoueurs() == this.getServer().getNbPlayers()-1) {
+					((Client)this.getListener()).saveGame(this.getServer());
+				} else {
+					System.out.println("Entrée invalide !");
+					played = false;
 				}
-			} catch(Exception ex) { ex.printStackTrace(); System.out.println("Commande invalide. Veuillez réessayer."); }
+			} catch(Exception ex) {
+				System.out.println("Commande invalide. Veuillez réessayer."); 
+				played = false;
+			}
 		}
 	}
 	
@@ -109,6 +112,7 @@ public class HumanPlayer extends Player implements Serializable {
 		System.out.println("Vous êtes le joueur: " + this.getName() + "\n"
 				+ "Votre couleur est: " + getLetterColor(this.getColor()) + "\n"
 				+ "Vous avez " + this.getNumberBarriersLeft() + " barrière(s)\n"
+				+ "Vos mouvements possibles sont représenté par: " + getLetterColor(ColorSquare.POSSIBILITY) + "\n"
 				+ "Vous êtes en [" + this.getPosition().getX() + "," + this.getPosition().getY() + "]");
 	}
 	
@@ -151,6 +155,8 @@ public class HumanPlayer extends Player implements Serializable {
 				res += "G";
 			else if(color.equals(ColorSquare.RED))
 				res += "R";
+			else if(color.equals(ColorSquare.POSSIBILITY))
+				res += "P";
 			else
 				res += " ";
 		return res;

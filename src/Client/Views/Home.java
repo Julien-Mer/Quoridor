@@ -1,67 +1,53 @@
 package Client.Views;
 import Client.Views.Components.*;
+import Client.Views.Models.Resources;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class Home extends JFrame{
+public class Home extends JPanel {
 
-	private static final long serialVersionUID = 1L;
-	private ImagePanel backgroundPanel;
-	private JLabel titreLabel;
 	private RoundedButton newGameBtn;
 	private RoundedButton resumeGameBtn;
 	private RoundedButton learningModeBtn;
-	private boolean activeResumeGame;
 
 
 	/**
 	 * Constructor of Home
 	 */
 	public Home(boolean activeResumeGame) {
-		 this.activeResumeGame = activeResumeGame;
-		 this.initComponent();
-	}
-
-	/**
-	 * Method which initialize all the component of the JFrame.
-	 **/
-	public void initComponent(){
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		getContentPane().setLayout(new BorderLayout());
-		setTitle("Quoridor");
-		this.setResizable(false);
-
-		this.newGameBtn = new RoundedButton(50,Color.WHITE);
+		this.setOpaque(false);
+		if(activeResumeGame)
+			this.setLayout(new GridLayout(3, 1));
+		else
+			this.setLayout(new GridLayout(2, 1));
+	
+		JPanel firstPanel = new JPanel();
+		firstPanel.setOpaque(false);
+		this.newGameBtn = new RoundedButton(50, Resources.BTN_COLOR);
 		this.newGameBtn.setText("Nouvelle partie");
-
-		this.resumeGameBtn = new RoundedButton(50,Color.WHITE);
-		this.resumeGameBtn.setText("Reprendre la partie");
-		if(this.activeResumeGame) {
-			this.resumeGameBtn.setVisible(true);
-		}else {
-			this.resumeGameBtn.setVisible(false);
-		}
-		//this.resumeGameBtn.addActionListener(new HomeController(this));
-
-		this.learningModeBtn = new RoundedButton(50,Color.WHITE);
-		this.learningModeBtn.setText("Mode pédagogique");
-		//this.learningModeBtn.addActionListener(new HomeController(this));
-
-		this.titreLabel = new JLabel(new ImageIcon("src/resources/titre.png"));
+		this.newGameBtn.setForeground(Resources.BTN_TEXT_COLOR);
+		firstPanel.add(this.newGameBtn);
+		this.add(firstPanel);
 		
-		this.backgroundPanel=new ImagePanel("src/resources/background.jpg");
-		this.backgroundPanel.setPreferredSize(new Dimension(500,400));
-		this.backgroundPanel.setLayout(new FlowLayout(FlowLayout.CENTER,50,30));
-		this.backgroundPanel.add(this.titreLabel);
-		this.backgroundPanel.add(this.newGameBtn);
-		this.backgroundPanel.add(this.resumeGameBtn);
-		this.backgroundPanel.add(this.learningModeBtn);
-		add(this.backgroundPanel);
-		pack();
-
-
+		if(activeResumeGame) { // Seulement s'il y a une sauvegarde
+			JPanel secondPanel = new JPanel();
+			secondPanel.setOpaque(false);
+			this.resumeGameBtn = new RoundedButton(50, Resources.BTN_COLOR);
+			this.resumeGameBtn.setText("Reprendre la partie");
+			this.resumeGameBtn.setForeground(Resources.BTN_TEXT_COLOR);
+			secondPanel.add(resumeGameBtn);
+			this.add(secondPanel);
+		}
+		
+		JPanel thirdPanel = new JPanel();
+		thirdPanel.setOpaque(false);
+		this.learningModeBtn = new RoundedButton(50, Resources.BTN_COLOR);
+		this.learningModeBtn.setText("Mode pédagogique");
+		this.learningModeBtn.setForeground(Resources.BTN_TEXT_COLOR);
+		thirdPanel.add(this.learningModeBtn);
+		this.add(thirdPanel);
 	}
-
 
 	/**
 	 * Get the newGame button

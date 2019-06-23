@@ -64,52 +64,61 @@ public class Board implements Serializable {
 	 * @return boolean if a player can move
 	 */
 	public boolean canMove(Square current, Square expected) {
-		return getMovementsPossible(current).contains(expected);
+		return getMovementsPossible(current, true).contains(expected);
 	}
 	
 	/**
 	 * Get all the movements possible
 	 * @param current the current square
+	 * @param players if it has to take care about players
 	 * @return all the possibilities
 	 */
-	public ArrayList<Square> getMovementsPossible(Square current) {
+	public ArrayList<Square> getMovementsPossible(Square current, Boolean players) {
 		ArrayList<Square> possibilities = new ArrayList<Square>();
-		possibilities.addAll(localPossibilities(current, 1, 0));
-		possibilities.addAll(localPossibilities(current, -1, 0));
-		possibilities.addAll(localPossibilities(current, 0, 1));
-		possibilities.addAll(localPossibilities(current, 0, -1));
+		possibilities.addAll(localPossibilities(current, players, 1, 0));
+		possibilities.addAll(localPossibilities(current, players, -1, 0));
+		possibilities.addAll(localPossibilities(current, players, 0, 1));
+		possibilities.addAll(localPossibilities(current, players, 0, -1));
 		return possibilities;
 	}
 	
 	/**
 	 * Get the local possibilities
 	 * @param current the current square
+	 * @param players if it has to take care about players
 	 * @param incX the x incrementation
 	 * @param incY the y incrementation
 	 * @return an arrayList of the possibilities
 	 */
-	public ArrayList<Square> localPossibilities(Square current, int incX, int incY) {
+	public ArrayList<Square> localPossibilities(Square current, Boolean players, int incX, int incY) {
 		ArrayList<Square> localPossibilities = new ArrayList<Square>();
 		int x = current.getX();
 		int y = current.getY();
 		
-		// [0, 0]
-		if(checkPos(x+1*incX, y+1*incY) && this.grid[x+1*incX][y+1*incY].getColor().equals(ColorSquare.FREE))// [1, 0] pas de case de barrière
-			if(checkPos(x+2*incX, y+2*incY) && this.grid[x+2*incX][y+2*incY].getColor().equals(ColorSquare.FREE)) // [2, 0] case jouable vide
-				localPossibilities.add(this.grid[x+2*incX][y+2*incY]); // Aucun joueur, case voisine [2,0]
-			else if(checkPos(x+3*incX, y+3*incY) && checkPos(x+4*incX, y+4*incY) && this.grid[x+3*incX][y+3*incY].getColor().equals(ColorSquare.FREE) && this.grid[x+4*incX][y+4*incY].getColor().equals(ColorSquare.FREE) ) // [2, 0] avec un joueur et [3,0] et [4,0] libres	
-				localPossibilities.add(this.grid[x+4*incX][y+4*incY]); // Case après un joueur sans barrière ou joueur [4, 0]
-			else { // [2,0] avec un joueur et [3,0] avec barrière ou [4,0] avec joueur
-				if(checkPos(x+2*incX+incY, y+2*incY+incX) && this.grid[x+2*incX+incY][y+2*incY+incX].getColor().equals(ColorSquare.FREE)) { // Pas de barrière en [2,1]
-					if(checkPos(x+2*incX+incY, y+2*incY+2*incX) && this.grid[x+2*incX+2*incY][y+2*incY+2*incX].getColor().equals(ColorSquare.FREE)) // Case [2,2] libre
-						localPossibilities.add(this.grid[x+2*incX+2*incY][y+2*incY+2*incX]); // Case [2,2] car joueur ou barriere en [3,0] ou [4,0]
+		if(players) { // Si on prend en compte les joueurs
+			// [0, 0]
+			if(checkPos(x+1*incX, y+1*incY) && this.grid[x+1*incX][y+1*incY].getColor().equals(ColorSquare.FREE))// [1, 0] pas de case de barrière
+				if(checkPos(x+2*incX, y+2*incY) && this.grid[x+2*incX][y+2*incY].getColor().equals(ColorSquare.FREE)) // [2, 0] case jouable vide
+					localPossibilities.add(this.grid[x+2*incX][y+2*incY]); // Aucun joueur, case voisine [2,0]
+				else if(checkPos(x+3*incX, y+3*incY) && checkPos(x+4*incX, y+4*incY) && this.grid[x+3*incX][y+3*incY].getColor().equals(ColorSquare.FREE) && this.grid[x+4*incX][y+4*incY].getColor().equals(ColorSquare.FREE) ) // [2, 0] avec un joueur et [3,0] et [4,0] libres	
+					localPossibilities.add(this.grid[x+4*incX][y+4*incY]); // Case après un joueur sans barrière ou joueur [4, 0]
+				else { // [2,0] avec un joueur et [3,0] avec barrière ou [4,0] avec joueur
+					if(checkPos(x+2*incX+incY, y+2*incY+incX) && this.grid[x+2*incX+incY][y+2*incY+incX].getColor().equals(ColorSquare.FREE)) { // Pas de barrière en [2,1]
+						if(checkPos(x+2*incX+incY, y+2*incY+2*incX) && this.grid[x+2*incX+2*incY][y+2*incY+2*incX].getColor().equals(ColorSquare.FREE)) // Case [2,2] libre
+							localPossibilities.add(this.grid[x+2*incX+2*incY][y+2*incY+2*incX]); // Case [2,2] car joueur ou barriere en [3,0] ou [4,0]
+					}
+					if(checkPos(x+2*incX-incY, y+2*incY-incX) && this.grid[x+2*incX-incY][y+2*incY-incX].getColor().equals(ColorSquare.FREE)) { // Pas de barrière en [2,-1]
+						if(checkPos(x+2*incX-2*incY, y+2*incY-2*incX) && this.grid[x+2*incX-2*incY][y+2*incY-2*incX].getColor().equals(ColorSquare.FREE)) // Case [2,-2] libre
+							localPossibilities.add(this.grid[x+2*incX-2*incY][y+2*incY-2*incX]); // Case [2,-2] car joueur ou barriere en [3,0] ou [4,0]
+					}
+				
 				}
-				if(checkPos(x+2*incX-incY, y+2*incY-incX) && this.grid[x+2*incX-incY][y+2*incY-incX].getColor().equals(ColorSquare.FREE)) { // Pas de barrière en [2,-1]
-					if(checkPos(x+2*incX-2*incY, y+2*incY-2*incX) && this.grid[x+2*incX-2*incY][y+2*incY-2*incX].getColor().equals(ColorSquare.FREE)) // Case [2,-2] libre
-						localPossibilities.add(this.grid[x+2*incX-2*incY][y+2*incY-2*incX]); // Case [2,-2] car joueur ou barriere en [3,0] ou [4,0]
-				}
-			
-			}
+		} else { // Sans prendre en compte les joueurs
+			// [0, 0]
+			if(checkPos(x+1*incX, y+1*incY) && this.grid[x+1*incX][y+1*incY].getColor().equals(ColorSquare.FREE))// [1, 0] pas de case de barrière
+				if(checkPos(x+2*incX, y+2*incY)) // [2, 0] case jouable
+					localPossibilities.add(this.grid[x+2*incX][y+2*incY]); // case voisine [2,0]
+		}
 		return localPossibilities;
 	}
 	
@@ -129,13 +138,18 @@ public class Board implements Serializable {
 	 */
 	public boolean checkBarriers(Square barrier1, Square barrier2, LinkedList<Player> players) {
 		boolean res = false;
-		if(barrier1.getX() % 2 != 0 && barrier1.getY() % 2 != 0) // Si la premiere barrière a des coordonnées impaires
-			if(Math.abs(barrier1.getX() - barrier2.getX()) == 2 && barrier1.getY() == barrier2.getY() || Math.abs(barrier1.getY() - barrier2.getY()) == 2 && barrier1.getX() == barrier2.getX()) { // Si les coordonnées des barrières sont cohérentes
+		Color color1 = barrier1.getColor();
+		Color color2 = barrier2.getColor();
+		if(!color1.equals(ColorSquare.BARRIER) || !color2.equals(ColorSquare.BARRIER)) // Si ce ne sont pas déjà 2 barrières
+			if(Math.abs(barrier1.getX() - barrier2.getX()) == 2 && barrier1.getY() == barrier2.getY() && barrier1.getY() % 2 != 0 || Math.abs(barrier1.getY() - barrier2.getY()) == 2  && barrier1.getX() == barrier2.getX() && barrier1.getX() % 2 != 0) {
 				res = true;
-				for(Player p : players) {
-					if(Path.getShortestPath(p, this).size() == 0)
+				barrier1.setColor(ColorSquare.BARRIER);
+				barrier2.setColor(ColorSquare.BARRIER);
+				for(Player p : players) 
+					if(Path.getShortestPathSize(p.getPosition(), this, this.positionToWin(p), false) == -1)
 						res = false;
-				}
+				barrier1.setColor(color1);
+				barrier2.setColor(color2);
 			}
 		return res;
 	}
@@ -148,23 +162,21 @@ public class Board implements Serializable {
 	 * @return the position of the player
 	 */
 	public static Square getFirstPosition(Board board, int nbrPlayers, Color color) {
-		int coeff = 1;
-		if(nbrPlayers == 4)
-			coeff = 3;
-		else if(nbrPlayers == 2)
-			coeff = 2;
+		int space = 0;
+		if(nbrPlayers > 2)
+			space = 2;
 		Square position = null;
 			if(color.equals(ColorSquare.BLUE))
-					position = board.getGrid()[(int)(board.getGrid().length/coeff)][0];
+				position = board.getGrid()[(int)(board.getGrid().length/2) + space][0];
 			else if(color.equals(ColorSquare.GREEN))
-					position = board.getGrid()[(int)(board.getGrid().length/coeff)][board.getGrid()[0].length-1];
-			else if(color.equals(ColorSquare.RED))
 				if(nbrPlayers % 2 != 0) // Si c'est impair et ce sera donc le seul
-					position = board.getGrid()[(int)(board.getGrid().length/2)-1][0];
+					position = board.getGrid()[(int)(board.getGrid().length/2)][board.getGrid()[0].length-1];
 				else 
-					position = board.getGrid()[(int)(board.getGrid().length/coeff)*2][0];
+					position = board.getGrid()[(int)(board.getGrid().length/2) + space][board.getGrid()[0].length-1];
+			else if(color.equals(ColorSquare.RED))
+				position = board.getGrid()[(int)(board.getGrid().length/2) - space][0];
 			else if(color.equals(ColorSquare.YELLOW))
-				position = board.getGrid()[(int)(board.getGrid().length/coeff)*2][board.getGrid()[0].length-1];
+				position = board.getGrid()[(int)(board.getGrid().length/2) - space][board.getGrid()[0].length-1];
 		return position;
 	}
 

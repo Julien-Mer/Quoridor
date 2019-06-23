@@ -2,86 +2,135 @@ package Client.Views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.util.LinkedList;
-
 import javax.swing.*;
+
 import Game.Square;
-import Server.Player;
-import Client.Controllers.GamePanelController;
+import Client.Controllers.Helpers.Functions;
 import Client.Views.Components.*;
-public class Game extends JFrame{
-	private static final long serialVersionUID = 1L;
-	private JLabel titleLbl;
+import Client.Views.Models.Resources;
+
+public class Game extends JPanel {
+
 	private RoundedButton saveBtn;
 	private RoundedButton placeBarrierBtn;
-	private GamePanelController pan;
-	private JPanel back;	
-	private String name1;
-	private String name2;
-	private String name3;
-	private String name4;
-	private String nbBarr1;
-	private String nbBarr2;
-	private String nbBarr3;
-	private String nbBarr4;
-	private LinkedList<Player> players;
-	private ImagePanel gridGame;
+	private GamePanel gamePanel;
+	private JLabel stateLbl;
+	
+	PanelInfoPlayer panLeft;
+	PanelInfoPlayer panRight;
+	
+	/**
+	 * Get the left panel
+	 * @return the left panel
+	 */
+	public PanelInfoPlayer getPanLeft() {
+		return this.panLeft;
+	}
+	
+	/**
+	 * Set a text to the state JLabel
+	 * @param text the next text of the label
+	 */
+	public void setStateLbl(String text) {
+		this.stateLbl.setText(text);;
+	}
+	
+	/**
+	 * Get the right panel
+	 * @return the right panel
+	 */
+	public PanelInfoPlayer getPanRight() {
+		return this.panRight;
+	}
+
+	
 	/**
 	 * Constructor of Game
 	 */
 	public Game() {
-		this.initComponent();
-	}
-	
-	public void initComponent() {
-		back = new JPanel();
+		this.setOpaque(false);
+		JPanel back = new JPanel();
 		back.setLayout(new BorderLayout());
-		back.setPreferredSize(new Dimension(1000,600));
-		this.setResizable(false);
-		setTitle("Quoridor");
+		back.setOpaque(false);
 		
-		//PanelInfoPlayer panLbl1 = new PanelInfoPlayer(name1,nbBarr1,name2,nbBarr2,"src/resources/background_game_haut_gauche.jpg","src/resources/background_game_bas_gauche.jpg");
-		//PanelInfoPlayer panLbl2 = new PanelInfoPlayer(name3,nbBarr3,name4,nbBarr4,"src/resources/background_game_haut_droit.jpg","src/resources/background_game_bas_droit.jpg");
+		JPanel spacePanel = new JPanel();
+		spacePanel.setOpaque(false);
 		
-		PanelInfoPlayer panLbl1 = new PanelInfoPlayer(null,null,"Jujum","10","src/resources/background_game_haut_gauche.jpg","src/resources/background_game_bas_gauche.jpg",null,"src/resources/Images/pion-red.png");
-		PanelInfoPlayer panLbl2 = new PanelInfoPlayer("Flash","10","Baptou","10","src/resources/background_game_haut_gauche.jpg","src/resources/background_game_bas_gauche.jpg","src/resources/Images/pion-green.png","src/resources/Images/pion-blue.png");
+		JPanel northPanel = new JPanel();
+		northPanel.setOpaque(false);
+		northPanel.setLayout(new GridLayout(2,1));
+		JPanel statePanel = new JPanel();
+		statePanel.setOpaque(false);
+		statePanel.setLayout(new GridBagLayout());
+		this.stateLbl = new JLabel("En attente...");
+		this.stateLbl.setForeground(Resources.BORDER);
+		this.stateLbl.setFont(new Font(Font.SERIF,Font.BOLD,25));
+		statePanel.add(this.stateLbl);
+		northPanel.add(statePanel);
 		
-		gridGame = new ImagePanel("src/resources/background_Game.jpg");
+		JPanel gridGame = new JPanel();
+		gridGame.setOpaque(false);
 		gridGame.setLayout(new GridLayout(1,3));
-		this.pan = new GamePanelController();
-		gridGame.add(panLbl1);
-		gridGame.add(pan.getPan());
-		gridGame.add(panLbl2);
+		this.gamePanel = new GamePanel();
+		this.panLeft = new PanelInfoPlayer(null, null);
+		this.panRight = new PanelInfoPlayer(null, null);
+		gridGame.add(this.panLeft);
+		gridGame.add(gamePanel);
+		gridGame.add(this.panRight);
 		
+		this.saveBtn = new RoundedButton(50, Resources.BTN_COLOR);
+		this.saveBtn.setText("Sauvegarder et quitter");
+		this.saveBtn.setForeground(Resources.BTN_TEXT_COLOR);
 		
-		this.saveBtn = new RoundedButton(30,Color.WHITE);
-		this.saveBtn.setText("Save and leave");
-		this.placeBarrierBtn = new RoundedButton(30,Color.WHITE);
-		this.placeBarrierBtn.setText("Place a barrier");
-		ImagePanel panS = new ImagePanel("src/resources/background_Bouton.jpg");
-		panS.setLayout(new BorderLayout());
-		panS.setPreferredSize(new Dimension(40,40));
-		panS.add(this.saveBtn,BorderLayout.WEST);
-		panS.add(this.placeBarrierBtn,BorderLayout.EAST);
+		this.placeBarrierBtn = new RoundedButton(50, Resources.BTN_COLOR);
+		this.placeBarrierBtn.setText("Placer une barrière");
+		this.placeBarrierBtn.setForeground(Resources.BTN_TEXT_COLOR);
+
+		JPanel southPanel = new JPanel();
+		southPanel.setOpaque(false);
+		southPanel.setLayout(new BorderLayout());
+		southPanel.setPreferredSize(new Dimension(40,40));
+		southPanel.add(this.saveBtn,BorderLayout.WEST);
+		southPanel.add(this.placeBarrierBtn,BorderLayout.EAST);
 		
-		this.titleLbl = new JLabel(new ImageIcon("src/resources/titre.png"));
-		ImagePanel panT = new ImagePanel("src/resources/background_game_title.jpg");
-		panT.add(this.titleLbl);
+		JPanel spacerSouthPanel = new JPanel();
+		spacerSouthPanel.setOpaque(false);
+		spacerSouthPanel.setLayout(new GridLayout(3,1));
+		spacerSouthPanel.add(spacePanel);
+		spacerSouthPanel.add(southPanel,BorderLayout.CENTER);
 		
-		back.add(panT,BorderLayout.NORTH);
+		back.add(northPanel,BorderLayout.NORTH);
 		back.add(gridGame,BorderLayout.CENTER);
-		back.add(panS,BorderLayout.SOUTH);
-		add(back);
-		pack();
+		back.add(spacerSouthPanel,BorderLayout.SOUTH);
+		this.setLayout(new GridLayout(1, 1));
+		this.add(back);
 	}
 
-	/**
-	 * Set the grid
-	 * @param grid the new grid
-	 */
 	public void setGrid(Square[][] grid) {
-	    this.pan.updatePanel(grid);
+		this.gamePanel.removeAll();
+  
+    	for(int i=0;i<grid.length;i++) {
+    		for(int j=0;j<grid[i].length;j++) {
+    			if(i%2 == 0 && j%2 == 0) {
+    				this.gamePanel.getGridLabels()[j/2][i/2] = this.gamePanel.createLbl(Functions.getPathSquare(grid[i][j].getColor()));
+    				this.gamePanel.getGridLabels()[j/2][i/2].setBorder(Functions.getBorder(grid, i, j));
+    			}
+    		}
+    	}
+    	this.gamePanel.initComponent();
+    	this.gamePanel.revalidate();
+    	this.gamePanel.repaint();
+	}
+	
+	public JLabel getLbl(int x, int y) {
+		return this.gamePanel.getGridLabels()[x][y];
+	}
+	
+	public GamePanel getGamePanel() {
+		return this.gamePanel;
 	}
 	
 	public RoundedButton getSaveBtn() {
@@ -92,31 +141,4 @@ public class Game extends JFrame{
 		return this.placeBarrierBtn;
 	}
 	
-	public void updateP(LinkedList<Player> players) {
-		this.players=players;
-		if(players.size()==2) {
-			this.name1 = players.get(0).getName();
-			this.nbBarr1 = String.valueOf(players.get(0).getNumberBarriersLeft());
-			this.name2 = players.get(1).getName();
-			this.nbBarr2 = String.valueOf(players.get(1).getNumberBarriersLeft());
-		}else if(players.size()==3) {
-			this.name1 = players.get(0).getName();
-			this.nbBarr1 = String.valueOf(players.get(0).getNumberBarriersLeft());
-			this.name2 = players.get(1).getName();
-			this.nbBarr2 = String.valueOf(players.get(1).getNumberBarriersLeft());
-			this.name3 = players.get(2).getName();
-			this.nbBarr3 = String.valueOf(players.get(2).getNumberBarriersLeft());
-		}else {
-			this.name1 = players.get(0).getName();
-			this.nbBarr1 = String.valueOf(players.get(0).getNumberBarriersLeft());
-			this.name2 = players.get(1).getName();
-			this.nbBarr2 = String.valueOf(players.get(1).getNumberBarriersLeft());
-			this.name3 = players.get(2).getName();
-			this.nbBarr3 = String.valueOf(players.get(2).getNumberBarriersLeft());
-			this.name4  = players.get(3).getName();
-			this.nbBarr4 = String.valueOf(players.get(3).getNumberBarriersLeft());
-		}
-		
-	}
-
 }

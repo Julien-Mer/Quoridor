@@ -10,6 +10,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 
+import Client.Views.Models.Resources;
+
 public class ImageButton extends JButton {
 	
 	private boolean isMouseOver;
@@ -17,7 +19,7 @@ public class ImageButton extends JButton {
     
     public ImageButton(String image) {
 		try { 
-			this.image = ImageIO.read(getClass().getResource("/resources/"+image));
+			this.image = ImageIO.read(getClass().getResource("/resources/" + Resources.theme + "/" + image));
 		} catch (IOException e) {}
 		this.setPreferredSize(new Dimension(this.image.getWidth(), this.image.getHeight()));
         this.setFocusPainted(false);
@@ -30,7 +32,7 @@ public class ImageButton extends JButton {
     	super.paintComponent(g);
     	g.drawImage(this.image, 0, 0, this);
         if (this.isMouseOver || !isEnabled())
-	        g.setColor(new Color(255,255,255,128));
+	        g.setColor(new Color(255,255,255,32));
         else
         	g.setColor(new Color(255,0,0,0));
         

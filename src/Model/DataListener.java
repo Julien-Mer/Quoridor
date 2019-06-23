@@ -50,11 +50,9 @@ public class DataListener {
 	 * Listen for data sent by a socket
 	 */
 	public void listenSocket() {
-		while(this.getSocket() != null) {
-			try {
-				Entry<Character, Object> entry = BasicCommunication.readData(this);
-				this.addDataReceived(entry);
-			} catch(Exception ex) { }
+		while(this.getSocket() != null && !this.getSocket().isClosed()) {
+			Entry<Character, Object> entry = BasicCommunication.readData(this);
+			this.addDataReceived(entry);
 		}
 	}
 	

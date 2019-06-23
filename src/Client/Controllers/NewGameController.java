@@ -1,38 +1,26 @@
 package Client.Controllers;
 
-import Client.*;
+import java.awt.Dimension;
 import Client.Views.NewGame;
+import Client.Views.Models.BasicController;
 
-public class NewGameController {
-	private String name;
-	/**
-	 * The NewGame view
-	 */
-	private NewGame view;
-
-	/**
-	 * Constructor of NewGameController
-	 * @param client the client used by the game
-	 */
-	public NewGameController() {
-		this.view = new NewGame();
-		Client.client.view = this.view;
-		this.view.setVisible(true);
-		this.view.getAddButtonPlayer().addActionListener(new Listener(this));
-		this.view.getAddButtonRobot().addActionListener(new Listener(this));
-		this.view.getRemoveButtonPlayer().addActionListener(new Listener(this));
-		this.view.getRemoveButtonRobot().addActionListener(new Listener(this));
-		this.view.getConfirmBtn().addActionListener(new Listener(this));
-		this.view.getChoiceLvl().addActionListener(new Listener(this));
-		this.view.getTerm().addActionListener(new Listener(this));
-	}
+public class NewGameController extends BasicController {
 	
 	/**
-	 *  Method which return the current view
-	 * @return the current view
+	 * Constructor of NewGameController
 	 */
-	public NewGame getView() {
-		return this.view;
-	}
+	public NewGameController() {
+		NewGame newGame = new NewGame();
+		super.initView(new Dimension(500, 650), newGame);
+		
+		newGame.getAddButtonPlayer().addActionListener(new Listener(this));
+		newGame.getAddButtonRobot().addActionListener(new Listener(this));
+		newGame.getRemoveButtonPlayer().addActionListener(new Listener(this));
+		newGame.getRemoveButtonRobot().addActionListener(new Listener(this));
+		newGame.getConfirmBtn().addActionListener(new Listener(this));
+		newGame.getChoiceLvl().addActionListener(new Listener(this));
+		newGame.getTheme().addActionListener(new Listener(this));
+	}	
+
 
 }

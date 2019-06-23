@@ -20,7 +20,7 @@ public class RoundedButton extends JButton {
     public RoundedButton(int radius, Color color) {
     	this.color = color;
         this.radius = radius;
-        this.setFont(new Font("Dialog", Font.PLAIN, 40));
+        this.setFont(new Font("Dialog", Font.PLAIN, 30));
         
         this.setFocusPainted(false);
         this.setContentAreaFilled(false);
@@ -31,7 +31,8 @@ public class RoundedButton extends JButton {
     public void paintComponent(Graphics g){
     	Graphics2D g2 = (Graphics2D)g.create();
         if (this.isMouseOver && isEnabled())
-            g2.setPaint(this.color.darker());
+        	g2.setPaint(new Color(color.getRed(), color.getGreen(), color.getBlue(),210));
+          
         else
             g2.setPaint(color);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

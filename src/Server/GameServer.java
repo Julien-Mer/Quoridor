@@ -37,14 +37,37 @@ public class GameServer implements Serializable {
 	private int nbAutoPlayers;
 	
 	/**
+	 * The difficulty level of AutoPlayers
+	 */
+	private int difficulty;
+	
+	/**
+	 * If the learning mode is enabled
+	 */
+	private boolean pedagoMode;
+	
+	/**
 	 * Constructor of Server
 	 * @param nbPlayers the number of players
 	 */
-	public GameServer(int nbPlayers, int nbAutoPlayers) {
-		System.out.println("Création d'un serveur (" + nbPlayers  + " joueurs, " + nbAutoPlayers + " ordinateurs)");
+	public GameServer(int nbPlayers, int nbAutoPlayers, int difficulty) {
+		System.out.println("Création d'un serveur difficulté " + difficulty + " (" + nbPlayers  + " joueurs, " + nbAutoPlayers + " ordinateurs)");
 		this.nbPlayers = nbPlayers;
 		this.nbAutoPlayers = nbAutoPlayers;
 		this.timeLine = new LinkedList<Player>();
+		if(difficulty ==0) {
+			this.pedagoMode = true;
+			difficulty = 1;
+		}
+		this.difficulty = difficulty;
+	}
+	
+	/**
+	 * Return the boolean if the learning mode is enabled
+	 * @return the learning mode
+	 */
+	public boolean getPedagoMode() {
+		return this.pedagoMode;
 	}
 	
 	/**
@@ -61,7 +84,7 @@ public class GameServer implements Serializable {
 	public void initialize() {
 		this.board = new Board();
 		for(int i = 0; i < nbAutoPlayers; i++) {
-			AutoPlayer autoPlayer = new AutoPlayer(AutoPlayer.getName(i), getColor(i), null, Board.getFirstPosition(this.board, nbPlayers,  getColor(i)), this);
+			AutoPlayer autoPlayer = new AutoPlayer(AutoPlayer.getName(i), getColor(i), null, Board.getFirstPosition(this.board, nbPlayers,  getColor(i)), this, this.difficulty);
 			this.timeLine.add(autoPlayer);
 		}
 	}
@@ -72,6 +95,18 @@ public class GameServer implements Serializable {
 	 */
 	public LinkedList<Player> getTimeLine() {
 		return this.timeLine;
+	}
+	
+	/**
+	 * Check if everybody is disconnected
+	 * @return if the game is empty or not
+	 */
+	public boolean isEmptyGame() {
+		int disconnected = 0;
+		for(Player p : this.timeLine)
+			if(p.getListener() == null || p.getListener() != null && p.getListener().getSocket().isClosed())
+				disconnected++;
+		return disconnected == (this.timeLine.size());
 	}
 	
 	/**
@@ -88,16 +123,14 @@ public class GameServer implements Serializable {
 	 * Ends the game
 	 */
 	public void endOfGame() {
-		ServerCommunication.sendDataAll(BasicCommunication.END_GAME_PREFIX, this.getTurnPlayer(), this.timeLine);
+		ServerCommunication.sendDataAll(BasicCommunication.END_GAME_PREFIX, this.getPreviousPlayer(), this.timeLine);
 		 ServerListener.servers.remove(this);
+		 try { Thread.sleep(2000); } catch (InterruptedException e1) { } // On attend que les joueurs soient bien notifiés de la fin
 		 for(Player p : this.timeLine)
 			try {
-				if(p.getListener() != null) { // Si ce n'est pas un ordinateur
-					p.getListener().getSocket().close();
-					p.getListener().getThread().stop();
-					//TODO DECONNEXION
-				}
-			} catch (IOException e) { } // On détruit le listener de tous les joueurs
+				if(p.getListener() != null) // Si ce n'est pas un ordinateur
+					p.getListener().getSocket().close(); // On détruit le listener de tous les joueurs
+			} catch (IOException e) { }
 	}
 
 	/**
@@ -109,49 +142,19 @@ public class GameServer implements Serializable {
 	}
 
 	/**
-	 * Creates a server from a save
-	 * @param object the save of the server
-	 */
-	public GameServer(Object object) {
-		GameServer server = ((GameServer)object);
-		this.board = server.board;
-		this.nbAutoPlayers = server.nbAutoPlayers;
-		this.timeLine = server.timeLine;
-		this.nbPlayers = server.nbPlayers;
-	}
-
-	/**
-	 * Send a turn message to the player who has to play and sends the timeLine
-	 * @throws IOException If the listener is unavailable
-	 */
-	public void sendTurnInfos() throws IOException {
-		if(this.getPlaces() == 0) { // Si le serveur est lancé
-			ServerCommunication.sendDataAll(BasicCommunication.TURN_PREFIX, this.timeLine, this.timeLine); // On leur donne la liste des joueurs
-		}
-	}
-	
-	/**
-	 * Send the player object to the player
-	 * @throws IOException If the listener is unavailable
-	 */
-	public void sendPlayerInfos() throws IOException {
-		for(Player p : this.timeLine)
-			if(p.getListener() != null) // Si ce n'est pas un ordinateur
-				ServerCommunication.sendData(BasicCommunication.PLAYER_PREFIX, p, p.getListener()); // On lui envoie son objet
-	}
-	
-	/**
 	 * Refresh infos for the players
 	 */
 	public void refreshInfos() {
 		try {
-			sendPlayerInfos();
-			ServerCommunication.sendDataAll(BasicCommunication.BOARD_PREFIX, this.board.getGrid(), this.timeLine); // On leur donne la carte
-			sendTurnInfos();
+			if(this.timeLine.get(0).getListener() != null && this.timeLine.get(0).getListener().getSocket().isClosed())
+				this.nextTurnPlayer(); // Si ce n'est pas un ordinateur et qu'il est déconnecté
+			
+			for(Player p : this.timeLine)
+				if(p.getListener() != null && !p.getListener().getSocket().isClosed()) // Si ce n'est pas un ordinateur et qu'il est connecté
+					ServerCommunication.sendData(BasicCommunication.PLAYER_PREFIX, p, p.getListener()); // On lui envoie son objet
 		} catch (Exception e) {
 			e.printStackTrace(); 
 		}
-		
 	}
 	
 	/**
@@ -188,7 +191,7 @@ public class GameServer implements Serializable {
 		Player player = new HumanPlayer(name, getColor(timeLine.size()), listener, Board.getFirstPosition(this.board, this.nbPlayers, getColor(timeLine.size())), server);
 		timeLine.add(player);
 		refreshInfos();
-		System.out.println(player.getName() + " a rejoint un serveur (" + this.nbPlayers  + " joueurs)");
+		System.out.println(player.getName() + " a rejoint un serveur (" + this.nbPlayers  + " joueur(s))");
 		if(timeLine.size() == this.nbPlayers) 
 			this.start();
 		return player;
@@ -218,11 +221,22 @@ public class GameServer implements Serializable {
 		 return this.timeLine.get(0);
 	 }
 	 
+	 /**
+	 * Get the player who has played before
+	 * @return the player who has played before
+	 */
+	 public Player getPreviousPlayer() {
+		 return this.timeLine.get(timeLine.size()-1);
+	 }
+	 
+	 /**
+	  * Change the turn of the timeLine
+	  */
 	 public void nextTurnPlayer() {
-		 if(!this.getBoard().hasWinned(this.getTurnPlayer())) {
-			 this.timeLine.add(this.timeLine.remove(0)); // On met le joueur courant à la fin de la timeLine
-			 refreshInfos();
-			 if(this.getTurnPlayer().getNumberBarriersLeft() == 0 && this.board.getMovementsPossible(this.getTurnPlayer().getPosition()).isEmpty()) {
+		 this.timeLine.add(this.timeLine.remove(0)); // On met le joueur courant à la fin de la timeLine
+		 refreshInfos();
+		 if(!this.getBoard().hasWinned(this.getPreviousPlayer())) {
+			 if(this.getTurnPlayer().getNumberBarriersLeft() == 0 && this.board.getMovementsPossible(this.getTurnPlayer().getPosition(), true).isEmpty()) {
 				 try {
 					ServerCommunication.sendData(BasicCommunication.MESSAGE_PREFIX, ServerCommunication.getMessagePacket("Vous ne pouvez pas jouer donc vous passez votre tour."), this.getTurnPlayer().getListener());
 				} catch (IOException e) { }
@@ -232,7 +246,6 @@ public class GameServer implements Serializable {
 		 } else {
 			 this.endOfGame();
 		 }
-		 System.out.println("Number of active threads from the given thread: " + Thread.activeCount());
 	 }
 	 
 	 /**
@@ -241,5 +254,13 @@ public class GameServer implements Serializable {
 	  */
 	 public Board getBoard() {
 		 return this.board;
+	 }
+	 
+	 /**
+	  * Get the difficulty of the bots
+	  * @return the difficulty level of the bots
+	  */
+	 public int getDifficulty() {
+		 return this.difficulty;
 	 }
 }

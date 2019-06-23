@@ -10,6 +10,11 @@ public class ColorSquare {
 	public static final Color BARRIER = Color.BLACK;
 	
 	/**
+	 * Color of a possibility
+	 */
+	public static final Color POSSIBILITY = Color.GRAY;
+	
+	/**
 	 * Color of a free square
 	 */
 	public static final Color FREE = Color.WHITE;
