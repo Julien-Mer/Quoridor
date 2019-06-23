@@ -3,7 +3,12 @@ package Client.Views.Components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import Client.Views.Models.Resources;
 
 public class GamePanel extends JPanel {
 
@@ -45,7 +50,10 @@ public class GamePanel extends JPanel {
     }
     
     public JLabel createLbl(String pathToImage) {
-        JLabel lbl = new JLabel(new ImageIcon(pathToImage));
+    	JLabel lbl = null;
+    	try { 
+    		lbl = new JLabel(new ImageIcon(ImageIO.read(getClass().getResource(pathToImage))));
+		} catch (IOException e) {}
         lbl.setHorizontalAlignment(JTextField.CENTER);
         lbl.setEnabled(true);
         return lbl;

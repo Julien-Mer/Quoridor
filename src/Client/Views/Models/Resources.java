@@ -28,23 +28,23 @@ public class Resources {
 				BTN_TEXT_COLOR = Color.WHITE;
 				break;
 		}
-		BACKGROUND_IMAGE = "src/resources/" + theme + "/background.jpg";
-		TITLE_IMAGE = "src/resources/" + theme + "/title.png";
-		LOGO_IUT_IMAGE = "src/resources/logo-iut-vannes.png";
-		LOGO_UBS_IMAGE = "src/resources/logo-ubs.png";
-		LOGO_IUT_BIG_IMAGE = "src/resources/logo-iut-big-vannes.png";
+		BACKGROUND_IMAGE = "/resources/" + theme + "/background.jpg";
+		TITLE_IMAGE = "/resources/" + theme + "/title.png";
+		LOGO_IUT_IMAGE = "/resources/logo-iut-vannes.png";
+		LOGO_UBS_IMAGE = "/resources/logo-ubs.png";
+		LOGO_IUT_BIG_IMAGE = "/resources/logo-iut-big-vannes.png";
 		
-		GREEN_PAWN_SQUARE_IMAGE = "src/resources/" + theme + "/square-pawn-green.png";
-		RED_PAWN_SQUARE_IMAGE = "src/resources/" + theme + "/square-pawn-red.png";
-		YELLOW_PAWN_SQUARE_IMAGE = "src/resources/" + theme + "/square-pawn-yellow.png";
-		BLUE_PAWN_SQUARE_IMAGE = "src/resources/" + theme + "/square-pawn-blue.png";
-		SQUARE_IMAGE = "src/resources/" + theme + "/square.png";
-		POSSIBILITY_SQUARE_IMAGE = "src/resources/" + theme + "/square-possibility.png";
+		GREEN_PAWN_SQUARE_IMAGE = "/resources/" + theme + "/square-pawn-green.png";
+		RED_PAWN_SQUARE_IMAGE = "/resources/" + theme + "/square-pawn-red.png";
+		YELLOW_PAWN_SQUARE_IMAGE = "/resources/" + theme + "/square-pawn-yellow.png";
+		BLUE_PAWN_SQUARE_IMAGE = "/resources/" + theme + "/square-pawn-blue.png";
+		SQUARE_IMAGE = "/resources/" + theme + "/square.png";
+		POSSIBILITY_SQUARE_IMAGE = "/resources/" + theme + "/square-possibility.png";
 
-		GREEN_PAWN_IMAGE = "src/resources/" + theme + "/pawn-green.png";
-		RED_PAWN_IMAGE = "src/resources/" + theme + "/pawn-red.png";
-		YELLOW_PAWN_IMAGE = "src/resources/" + theme + "/pawn-yellow.png";
-		BLUE_PAWN_IMAGE = "src/resources/" + theme + "/pawn-blue.png";
+		GREEN_PAWN_IMAGE = "/resources/" + theme + "/pawn-green.png";
+		RED_PAWN_IMAGE = "/resources/" + theme + "/pawn-red.png";
+		YELLOW_PAWN_IMAGE = "/resources/" + theme + "/pawn-yellow.png";
+		BLUE_PAWN_IMAGE = "/resources/" + theme + "/pawn-blue.png";
 	}
 	
 	public static Color BORDER =  null;

@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.io.IOException;
 import java.awt.Font;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,7 +35,10 @@ public class PanelInfoPlayer extends JPanel {
 			JLabel nameLabel = new JLabel("<html> Nom: " + player.getName() + " [" + player.getPosition().getX()/2 + ", " + player.getPosition().getY()/2 + "]<br> Barrière(s) restante(s): " + player.getNumberBarriersLeft() + "</html>");
 			nameLabel.setFont(new Font(Font.SERIF,Font.BOLD,20));
 			nameLabel.setForeground(Resources.TEXT_COLOR);
-			JLabel pawnLabel = new JLabel(new ImageIcon(Functions.getPathPlayer(player.getColor())));
+			JLabel pawnLabel = null;
+			try {
+				pawnLabel = new JLabel(new ImageIcon(ImageIO.read(getClass().getResource(Functions.getPathPlayer(player.getColor())))));
+			} catch (IOException e) { }
 			infosPlayer.add(nameLabel);
 			infosPlayer.add(pawnLabel);
 		}

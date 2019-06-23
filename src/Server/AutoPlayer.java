@@ -35,7 +35,6 @@ public class AutoPlayer extends Player implements Serializable  {
 	 */
 	public void play() {
 		try { Thread.sleep(500); } catch (InterruptedException e) {} // On laisse un petit délai pour que le joueur ait le temps de voir
-		System.out.println("Jeu de l'IA: " + this.getName() + " niveau: " + this.difficulty);
 		ArrayList<Square> path = Path.getShortestPath(this, this.getServer().getBoard(), true);
 		Player target = Path.getBestOtherPlayer(this.getServer().getTimeLine(), (Player)this, this.getServer().getBoard());
 		ArrayList<Square> targetPath = Path.getShortestPath(target, this.getServer().getBoard(), true);

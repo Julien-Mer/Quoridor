@@ -7,7 +7,7 @@ public class launch {
 	
 	public static void main(String[] args) {
 		boolean serveur = false;
-		if(!serveur) {
+		if(serveur) {
 			new Thread( new Runnable() {
 		        public void run()  {
 		        	while(true) {

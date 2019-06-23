@@ -34,7 +34,6 @@ public class BasicCommunication {
 			if(listener != null && !listener.getSocket().isClosed()) {
 				ObjectOutputStream out = new ObjectOutputStream(listener.getSocket().getOutputStream());
 				out.writeChar(key);
-				System.out.println(">> " + key);
 				if(object != null)
 					out.writeObject(object);
 				out.flush();

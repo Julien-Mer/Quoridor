@@ -38,8 +38,8 @@ public class Client extends DataListener {
 	/**
 	 * Adresse IP du serveur
 	 */
-	//private final static String IP = "projet-milleetunsourires.com";
-	private final static String IP = "127.0.0.1";
+	private final static String IP = "projet-milleetunsourires.com";
+	//private final static String IP = "127.0.0.1";
 	
 	/**
 	 * Port du serveur

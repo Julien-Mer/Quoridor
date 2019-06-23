@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -17,7 +20,11 @@ public class TopPanel extends JPanel {
 		this.setBackground(new Color(0,0,0,0));
 		this.setLayout(new BorderLayout());
 		JPanel titlePanel = new JPanel();
-		JLabel titleLabel = new JLabel(new ImageIcon(Resources.TITLE_IMAGE));
+		JLabel titleLabel = null;
+		try { 
+			titleLabel = new JLabel(new ImageIcon(ImageIO.read(getClass().getResource(Resources.TITLE_IMAGE))));
+		} catch (IOException e) {}
+
 		titlePanel.add(titleLabel);
 		titlePanel.setOpaque(false);
 		this.add(titlePanel, BorderLayout.CENTER);
