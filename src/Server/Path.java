@@ -169,7 +169,10 @@ public class Path {
 	/**
 	 * Get the shortest path size with a BFS
 	 * @param square the first square
+	 * @param board the board of the game
 	 * @param posToWin the y position to win the game
+	 * @param players if the players are considered as walls or not
+	 * @return the shortest path size
 	 */
 	public static int getShortestPathSize(Square square, Board board, int posToWin, boolean players) {
 		int res = 0;

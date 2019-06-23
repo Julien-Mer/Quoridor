@@ -20,6 +20,7 @@ public class ServerListener extends DataListener {
 	
 	/**
 	 * Create a listener for the socket
+	 * @param socket the socket of the server
 	 */
 	public ServerListener(Socket socket) {
 		super(socket);

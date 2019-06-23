@@ -18,6 +18,11 @@ import Server.Player;
 
 public class PanelInfoPlayer extends JPanel {
 
+	/**
+	 * Creates a PanelInfoPlayer
+	 * @param player1 the first player
+	 * @param player2 the second player
+	 */
 	public PanelInfoPlayer(Player player1, Player player2) {
 		super();
 		this.setOpaque(false);
@@ -25,6 +30,11 @@ public class PanelInfoPlayer extends JPanel {
 		this.refreshPanel(player1, player2);
 	}
 	
+	/**
+	 * Get the panel of a player
+	 * @param player the player concerned
+	 * @return the panel of the player
+	 */
 	public JPanel getPanel(Player player) {
 		ImagePanel infosPlayer = new ImagePanel(Resources.PANEL_PLAYERS_IMAGE);
 		if(Resources.PANEL_PLAYERS_IMAGE == null)
@@ -45,6 +55,11 @@ public class PanelInfoPlayer extends JPanel {
 		return infosPlayer;
 	}
 	
+	/**
+	 * Refresh players panels
+	 * @param player1 the first player
+	 * @param player2 the second player
+	 */
 	public void refreshPanel(Player player1, Player player2) {
 		this.removeAll();
 		this.setLayout(new GridLayout(2,1));

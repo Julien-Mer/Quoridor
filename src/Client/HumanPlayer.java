@@ -16,9 +16,9 @@ public class HumanPlayer extends Player implements Serializable {
 	 * Creates a player
 	 * @param name the name of the player
 	 * @param color the color of the player
-	 * @param socket the socket of the player
+	 * @param listener the listener of the player
 	 * @param position the position of the player
-	 * @param barriers the maximum of barriers for the player
+	 * @param server the server of the player
 	 */
 	public HumanPlayer(String name, Color color, DataListener listener, Square position, GameServer server) {
 		super(name, color, listener, position, server);
@@ -117,8 +117,8 @@ public class HumanPlayer extends Player implements Serializable {
 	}
 	
 	/**
-	 * Displays the grid
-	 * grid the grid to display
+	 * Displays the grid 
+	 * @param grid the grid to display
 	 */
 	 public static void showGrid(Square[][] grid) {
 		 String res = "";

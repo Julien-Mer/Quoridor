@@ -26,6 +26,8 @@ public class BasicView extends JFrame{
 	
 	/**
 	 * Constructor of BasicView
+	 * @param dimension the dimension of the view
+	 * @param component the component of the view
 	 */
 	public BasicView(Dimension dimension, Component component) {
 		this.component = component;

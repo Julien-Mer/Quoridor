@@ -50,9 +50,9 @@ public class Player implements Serializable {
 	 * Creates a player
 	 * @param name the name of the player
 	 * @param color the color of the player
-	 * @param socket the socket of the player
+	 * @param listener the listener of the player
 	 * @param position the position of the player
-	 * @param barriers the maximum of barriers for the player
+	 * @param server the server of the player
 	 */
 	public Player(String name, Color color, DataListener listener, Square position, GameServer server) {
 		this.name = name;
@@ -82,7 +82,7 @@ public class Player implements Serializable {
 	
 	/**
 	 * Set the listener used by the player
-	 * @param the listener used by the player
+	 * @param listener the listener used by the player
 	 */
 	public void setListener(DataListener listener) {
 		this.listener = listener;

@@ -54,6 +54,8 @@ public class GameServer implements Serializable {
 	/**
 	 * Constructor of Server
 	 * @param nbPlayers the number of players
+	 * @param nbAutoPlayers the number of AutoPlayers
+	 * @param difficulty the difficulty of the game
 	 */
 	public GameServer(int nbPlayers, int nbAutoPlayers, int difficulty) {
 		System.out.println("Création d'un serveur difficulté " + difficulty + " (" + nbPlayers  + " joueurs, " + nbAutoPlayers + " ordinateurs)");
@@ -201,9 +203,10 @@ public class GameServer implements Serializable {
 	
 	/**
 	 * Add a new player to the game
-	 * @param player the new player
-	 * @param socket the socket of the player
+	 * @param name the name of the player
+	 * @param listener the listener of the player
 	 * @param server the server of the player
+	 * @return the new player
 	 */
 	public Player newPlayer(String name, DataListener listener, GameServer server) {
 		Player player = new HumanPlayer(name, getColor(timeLine.size()), listener, Board.getFirstPosition(this.board, this.nbPlayers, getColor(timeLine.size())), server);

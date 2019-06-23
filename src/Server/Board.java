@@ -59,8 +59,8 @@ public class Board implements Serializable {
 	
 	/**
 	 * Check if a player can move
-	 * @param position the initial position
-	 * @param position the new position
+	 * @param current the initial position
+	 * @param expected the new position
 	 * @return boolean if a player can move
 	 */
 	public boolean canMove(Square current, Square expected) {
@@ -134,6 +134,9 @@ public class Board implements Serializable {
 	
 	/**
 	 * Check if the barriers can be placed
+	 * @param barrier1 the first barrier
+	 * @param barrier2 the second barrier
+	 * @param players the list of players in the game
 	 * @return boolean if the barriers can be placed
 	 */
 	public boolean checkBarriers(Square barrier1, Square barrier2, LinkedList<Player> players) {
@@ -158,7 +161,7 @@ public class Board implements Serializable {
 	 * Get the first position of the player
 	 * @param board the board of the player
 	 * @param nbrPlayers the number of players
-	 * @param numberPlayer the number of the player
+	 * @param color the color of the player
 	 * @return the position of the player
 	 */
 	public static Square getFirstPosition(Board board, int nbrPlayers, Color color) {

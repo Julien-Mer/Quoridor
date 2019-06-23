@@ -20,6 +20,7 @@ public class GameController extends BasicController {
 	
 	/**
 	 * Constructor of GameController
+	 * @param save if the game allows save or not
 	 */
 	public GameController(boolean save) {
 		Game game = new Game(save);
@@ -29,6 +30,11 @@ public class GameController extends BasicController {
 		game.getBarrierBtn().addActionListener(new Listener(this));
 	}	
 	
+	/**
+	 * Update the game view
+	 * @param grid the new grid
+	 * @param players the list of players
+	 */
 	public void updateGame(Square[][] grid, LinkedList<Player> players) {
 		Player[] playersList = new Player[4];
 		for(Player p : players) {

@@ -9,6 +9,10 @@ import javax.imageio.ImageIO;
 public class ImagePanel extends JPanel{
 	private Image img;
 
+	/**
+	 * Creates an ImagePanel
+	 * @param img the image
+	 */
 	public ImagePanel(String img) {
 		if(img != null) 
 			try { 
@@ -16,10 +20,17 @@ public class ImagePanel extends JPanel{
 			} catch (IOException e) {}
 	}
 
+	/**
+	 * Creates an ImagePanel
+	 * @param img the image
+	 */
 	public ImagePanel(Image img) {
 		this.img = img;
 	}
 
+	/**
+	 * Paint the component
+	 */
 	public void paintComponent(Graphics g) {
 		if(this.img != null)
 			g.drawImage(img, 0, 0, null);

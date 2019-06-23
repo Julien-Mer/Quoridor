@@ -40,7 +40,8 @@ public class ServerCommunication extends BasicCommunication {
 
 	/**
 	 * Send the data to all the players
-	 * @param data the send data to send all the players
+	 * @param key the key of the packet
+	 * @param object the object to send
 	 * @param players all the players
 	 */
 	public static void sendDataAll(char key, Object object, LinkedList<Player> players) {

@@ -131,6 +131,7 @@ public class Client extends DataListener {
 	/**
 	 * Show a message to the client
 	 * @param message the message to show
+	 * @param popup if the message is a popup or not
 	 */
 	public void showMessage(String message, boolean popup) {
 		if(this.terminal) 
@@ -143,8 +144,7 @@ public class Client extends DataListener {
 	
 	/**
 	 * Analyzes the data and send a command to the client
-	 * @param data the date to analyze
-	 * @param client the client to send command
+	 * @param listener the listener concerned
 	 */
 	public static void analyzeData(DataListener listener) {
 		while(listener.getSocket() != null && !listener.getSocket().isClosed()) { // Tant que le joueur est connecté

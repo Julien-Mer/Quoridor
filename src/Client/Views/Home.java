@@ -14,6 +14,7 @@ public class Home extends JPanel {
 
 	/**
 	 * Constructor of Home
+	 * @param activeResumeGame if the game can be resumed or not
 	 */
 	public Home(boolean activeResumeGame) {
 		this.setOpaque(false);

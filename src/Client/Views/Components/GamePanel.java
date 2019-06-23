@@ -18,10 +18,9 @@ public class GamePanel extends JPanel {
     JPanel[][] panels;
     JPanel mainPanel;
     
-    public GamePanel() {
-    	
-    }
-    
+	/**
+	 * Initialize the components
+	 */
     public void initComponent() {
     	this.mainPanel = new JPanel(new GridLayout(CLUSTER, CLUSTER, 1, 1));
         this.mainPanel.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
@@ -45,10 +44,19 @@ public class GamePanel extends JPanel {
         }
     }
     
+    /**
+     * Get the gridLabels
+     * @return the gridLabels
+     */
     public JLabel[][] getGridLabels(){
     	return this.fieldGrid;
     }
     
+    /**
+     * Create a JLabel with an ImageIcon
+     * @param pathToImage the path to the image
+     * @return the new JLabel
+     */
     public JLabel createLbl(String pathToImage) {
     	JLabel lbl = null;
     	try { 

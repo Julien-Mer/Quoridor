@@ -14,9 +14,20 @@ import Client.Views.Models.Resources;
 
 public class ImageButton extends JButton {
 	
+	/**
+	 * MouseOver boolean of the button
+	 */
 	private boolean isMouseOver;
+	
+	/**
+	 * Background image of the button
+	 */
 	private BufferedImage image;
     
+	/**
+	 * Creates a button with an image in background
+	 * @param image the image in the background
+	 */
     public ImageButton(String image) {
 		try { 
 			this.image = ImageIO.read(getClass().getResource("/resources/" + Resources.theme + "/" + image));
@@ -28,6 +39,9 @@ public class ImageButton extends JButton {
         this.addMouseListener(new mouseAdapter());
     }
 
+    /**
+     * Paint the component
+     */
     public void paintComponent(Graphics g) {
     	super.paintComponent(g);
     	g.drawImage(this.image, 0, 0, this);
@@ -40,6 +54,10 @@ public class ImageButton extends JButton {
         
     }
     
+    /**
+     * Button mouseOver state changer
+     * @param state the new state
+     */
     public void setMouseOver(boolean state) {
     	this.isMouseOver = state;
     }

@@ -22,8 +22,8 @@ public class AutoPlayer extends Player implements Serializable  {
 	 * @param color the color of the player
 	 * @param socket the socket used
 	 * @param position the position of the player
-	 * @param barriers the number of barriers of the player
-	 * @param board the board used by the game
+	 * @param server the server of the autoplayer
+	 * @param difficulty the difficulty of the autoplayer
 	 */
 	public AutoPlayer(String name, Color color, Socket socket, Square position, GameServer server, int difficulty) {
 		super(name, color, null, position, server);
@@ -71,7 +71,7 @@ public class AutoPlayer extends Player implements Serializable  {
 	
 	/**
 	 * Get the name of the bot
-	 * @param the id of the bot
+	 * @param i the id of the bot
 	 * @return the name of the bot
 	 */
 	public static String getName(int i) {

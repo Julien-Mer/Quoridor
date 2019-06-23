@@ -13,10 +13,26 @@ import javax.swing.JButton;
 
 public class RoundedButton extends JButton {
 	
+	/**
+	 * The color of the button
+	 */
 	private Color color;
+	
+	/**
+	 * The state of the button
+	 */
 	private boolean isMouseOver;
+	
+	/**
+	 * The radius of the button
+	 */
     private int radius;
     
+	/**
+	 * Creates a rounded button
+	 * @param radius the radius of the button
+	 * @param color the color of the button
+	 */
     public RoundedButton(int radius, Color color) {
     	this.color = color;
         this.radius = radius;
@@ -28,6 +44,9 @@ public class RoundedButton extends JButton {
         this.addMouseListener(new mouseAdapter());
     }
 
+    /**
+     * Paint the component
+     */
     public void paintComponent(Graphics g){
     	Graphics2D g2 = (Graphics2D)g.create();
         if (this.isMouseOver && isEnabled())
@@ -40,6 +59,10 @@ public class RoundedButton extends JButton {
         super.paintComponent(g);
     }
     
+    /**
+     * Button mouseOver state changer
+     * @param state the new state
+     */
     public void setMouseOver(boolean state) {
     	this.isMouseOver = state;
     }

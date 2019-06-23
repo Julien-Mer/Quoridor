@@ -48,6 +48,7 @@ public class Game extends JPanel {
 	
 	/**
 	 * Constructor of Game
+	 * @param save if the save is enabled or not
 	 */
 	public Game(boolean save) {
 		this.setOpaque(false);
@@ -108,6 +109,10 @@ public class Game extends JPanel {
 		this.add(back);
 	}
 
+	/**
+	 * Set the new grid of the Game
+	 * @param grid the new grid
+	 */
 	public void setGrid(Square[][] grid) {
 		this.gamePanel.removeAll();
   
@@ -124,18 +129,36 @@ public class Game extends JPanel {
     	this.gamePanel.repaint();
 	}
 	
+	/**
+	 * Get the label at the positions
+	 * @param x the x position
+	 * @param y the y position
+	 * @return the label at x,y
+	 */
 	public JLabel getLbl(int x, int y) {
 		return this.gamePanel.getGridLabels()[x][y];
 	}
 	
+	/**
+	 * Get the game Panel
+	 * @return the game panel
+	 */
 	public GamePanel getGamePanel() {
 		return this.gamePanel;
 	}
 	
+	/**
+	 * Get the save button
+	 * @return the save button
+	 */
 	public RoundedButton getSaveBtn() {
 		return this.saveBtn;
 	}
 	
+	/**
+	 * Get the barrier button
+	 * @return the barrier button
+	 */
 	public RoundedButton getBarrierBtn() {
 		return this.placeBarrierBtn;
 	}

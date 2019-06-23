@@ -15,6 +15,9 @@ import javax.swing.JPanel;
 
 public class TopPanel extends JPanel {
 	
+	/**
+	 * Constructor of the TopPanel
+	 */
 	public TopPanel() {		
 		this.setOpaque(false);
 		this.setBackground(new Color(0,0,0,0));

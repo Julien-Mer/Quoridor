@@ -115,7 +115,6 @@ public class DataListener {
 	/**
 	 * Set the new data received
 	 * @param data the entry
-	 * @param object the object
 	 */
 	public void addDataReceived(Entry<Character, Object> data) {
 		this.addDataReceived(data.getKey(), data.getValue());
@@ -123,6 +122,7 @@ public class DataListener {
 	
 	/**
 	 * Create a listener for the socket
+	 * @param socket the socket concerned
 	 */
 	public DataListener(Socket socket) {
 		this.dataReceived = new TreeMap<Character, Object>();

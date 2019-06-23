@@ -5,6 +5,10 @@ import Server.ServerListener;
 
 public class launch {
 	
+	/**
+	 * Main method of the game
+	 * @param args Arguments to start the game
+	 */
 	public static void main(String[] args) {
 		boolean serveur = false;
 		if(serveur) {
