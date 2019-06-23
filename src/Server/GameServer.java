@@ -47,6 +47,11 @@ public class GameServer implements Serializable {
 	private boolean pedagoMode;
 	
 	/**
+	 * The turns passed since the start of the game
+	 */
+	private int turns;
+	
+	/**
 	 * Constructor of Server
 	 * @param nbPlayers the number of players
 	 */
@@ -55,6 +60,7 @@ public class GameServer implements Serializable {
 		this.nbPlayers = nbPlayers;
 		this.nbAutoPlayers = nbAutoPlayers;
 		this.timeLine = new LinkedList<Player>();
+		this.turns = 0;
 		if(difficulty ==0) {
 			this.pedagoMode = true;
 			difficulty = 1;
@@ -123,6 +129,11 @@ public class GameServer implements Serializable {
 	 * Ends the game
 	 */
 	public void endOfGame() {
+		if(this.pedagoMode) {
+			String message = "Eh bien, ce n'est pas trop tôt !\n"
+					+ "Essayez d'affronter d'autres intelligences artificielles plus corriaces en cliquant sur Nouvelle partie, dans l'accueil !\n";
+			ServerCommunication.sendDataAll(BasicCommunication.MESSAGE_PREFIX, ServerCommunication.getMessagePacket(message), this.timeLine);
+		 }
 		ServerCommunication.sendDataAll(BasicCommunication.END_GAME_PREFIX, this.getPreviousPlayer(), this.timeLine);
 		 ServerListener.servers.remove(this);
 		 try { Thread.sleep(2000); } catch (InterruptedException e1) { } // On attend que les joueurs soient bien notifiés de la fin
@@ -138,7 +149,14 @@ public class GameServer implements Serializable {
 	 * @return the rules of the game
 	 */
 	public String rules() {
-		return "Les règles sont les règles.";
+		String res = "/***** Déroulement du jeu *****/\n" +
+				"Le but de ce jeu est d'arrivée sur la ligne de départ de son adversaire en se déplaçant tour à tour. De plus, il est possible de placer des barrières pour gêner son adversaire.\n" +
+				"Le jeu s'arrête quand un des joueurs est arrivé sur la ligne d'en face, qui est donc le vainqueur.\n" +
+				"/***** Placer les barrières *****/\n" +
+				"Vous pouvez placer une barrière n'importe où sur le plateau de jeu, de plus celle-ci sera donc de taille 2.\n" +
+				"Par contre, il est interdit de bloquer totalement son adversaire avec les barrières. En effet, il y aura une vérification à chaque pose de barrières pour vérifier cette règle.\n" + 
+				"-----> Bon jeu sur Quoridor ! (*-*) <-----\n";
+		return res;
 	}
 
 	/**
@@ -233,6 +251,7 @@ public class GameServer implements Serializable {
 	  * Change the turn of the timeLine
 	  */
 	 public void nextTurnPlayer() {
+		 this.turns++;
 		 this.timeLine.add(this.timeLine.remove(0)); // On met le joueur courant à la fin de la timeLine
 		 refreshInfos();
 		 if(!this.getBoard().hasWinned(this.getPreviousPlayer())) {
@@ -243,6 +262,28 @@ public class GameServer implements Serializable {
 				nextTurnPlayer();
 			 } else if(this.getTurnPlayer().getListener() == null) // C'est un ordinateur
 				 this.getTurnPlayer().play();
+			 if(this.pedagoMode) {
+				 String message = null;
+				 if(turns < this.getNbPlayers()) { // Premier tour
+					 message = "<html><u>Bienvenue dans Quoridor !</u><html>\n"
+					 		+ "Le but du jeu est d'arriver sur la ligne en face de vous !\n"
+					 		+ "Pour ce faire, il vous suffit de vous déplacer en cliquant sur les cases grises.\n"
+					 		+ "Vous ne pouvez effectuer une action que pendant votre tour de jeu, vérifiez le message qui s'affiche au dessus de la grille.";
+				 } else if(turns < 2*this.getNbPlayers()) {
+					 message = "Maintenant que vous savez vous déplacer, avez-vous remarqué ces traits noirs ?\n"
+						 	+ "Il s'agit de barrières, vous pouvez aussi en poser, cependant elles ne doivent pas bloquer entièrement l'adversaire.\n"
+						 	+ "Essayez de poser une barrière devant un joueur, vous pouvez voir ses coordonnées sur un des côtés de la grille.\n"
+						 	+ "Tout d'abord, cliquez sur le bouton: Placer une barrière, en bas à droite. Ensuite vous pouvez entrer les coordonnées du joueur ainsi que la direction de la barrière.";
+				 } else if(turns < 3*this.getNbPlayers()) {
+					 message = "Il va falloir user d'intelligence pour arriver le premier au bout de la grille\n"
+							+ "Evitez de vous piéger vous même et réutilisez les barrières de l'adversaire contre lui.\n";
+				 }
+				 if(message != null) {
+					 try {
+						ServerCommunication.sendData(BasicCommunication.MESSAGE_PREFIX, ServerCommunication.getMessagePacket(message), this.getTurnPlayer().getListener());
+					 } catch (IOException e) { }
+				 }
+			 }
 		 } else {
 			 this.endOfGame();
 		 }

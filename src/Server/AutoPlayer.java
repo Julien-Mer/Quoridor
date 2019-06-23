@@ -17,11 +17,6 @@ public class AutoPlayer extends Player implements Serializable  {
 	private int difficulty;
 	
 	/**
-	 * The turn passed since the start of the game
-	 */
-	private int turn;
-	
-	/**
 	 * Constructor of AutoPlayer
 	 * @param name the name of the player
 	 * @param color the color of the player
@@ -33,7 +28,6 @@ public class AutoPlayer extends Player implements Serializable  {
 	public AutoPlayer(String name, Color color, Socket socket, Square position, GameServer server, int difficulty) {
 		super(name, color, null, position, server);
 		this.difficulty = difficulty;
-		this.turn = 0;
 	}
 
 	/**
@@ -41,7 +35,6 @@ public class AutoPlayer extends Player implements Serializable  {
 	 */
 	public void play() {
 		try { Thread.sleep(500); } catch (InterruptedException e) {} // On laisse un petit délai pour que le joueur ait le temps de voir
-		this.turn++;
 		System.out.println("Jeu de l'IA: " + this.getName() + " niveau: " + this.difficulty);
 		ArrayList<Square> path = Path.getShortestPath(this, this.getServer().getBoard(), true);
 		Player target = Path.getBestOtherPlayer(this.getServer().getTimeLine(), (Player)this, this.getServer().getBoard());
@@ -67,7 +60,6 @@ public class AutoPlayer extends Player implements Serializable  {
 			}
 		} else if(difficulty == 3) {
 			Entry<Integer, Square[]> bestBarriers = Path.getBestBarriers(this, target, this.getServer().getBoard(), this.getServer().getTimeLine(), true);
-			System.out.println("best: " + bestBarriers.getKey());
 			if(((targetPath.size() < path.size() || bestBarriers.getKey() > 2)|| path.size() == 0) && this.getNumberBarriersLeft() > 0 && bestBarriers.getKey() > 0) { // Soit elle joue ou place une barrière sur l'autre joueur est plus proche ou qu'elle ne peut pas jouer
 				this.addBarrier(bestBarriers.getValue()[0], bestBarriers.getValue()[1]);
 			} else if(path.size() > 1) { // Si on peut bouger

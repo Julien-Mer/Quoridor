@@ -45,7 +45,6 @@ public class Game extends JPanel {
 	public PanelInfoPlayer getPanRight() {
 		return this.panRight;
 	}
-
 	
 	/**
 	 * Constructor of Game
